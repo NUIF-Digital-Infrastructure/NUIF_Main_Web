@@ -34,4 +34,4 @@ https://newcastleuniversityinvestmentfund.com/
 
 # Authors
 
-Samraat Jain, James Delin, Sarah Rafiepour, Ryan Duong, Shalom Ademuwagun
+[Samraat Jain](https://github.com/SamraatJain9), James Delin, Sarah Rafiepour, Ryan Duong, Shalom Ademuwagun
