@@ -37,11 +37,32 @@ export default function HumanNetworkMaintainerPrivacyPolicyPage() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold text-gray-900">3. Data Storage</h2>
-            <p>
-              All data remains within the user&apos;s Google Sheet and Google account. Human Network Maintainer does not maintain
-              its own database or external storage.
-            </p>
+            <h2 className="text-2xl font-semibold text-gray-900">3. Data Storage, Retention, and Deletion</h2>
+            <div className="space-y-4">
+              <p>
+                <strong>Data Storage:</strong> Human Network Maintainer does not maintain an external database. All user data
+                (contact names, dates, and email addresses) resides exclusively within your own Google Spreadsheet.
+              </p>
+              <p>
+                <strong>Data Retention:</strong> We do not retain any Google user data on our own infrastructure. Data is only
+                accessed in real time within your Google account to execute the script&apos;s functions (e.g., sending reminders).
+                Once the script execution is complete, no data is held by the application.
+              </p>
+              <p>
+                <strong>Data Deletion:</strong> Because the data is stored within your Google Sheet, you can delete the data at
+                any time by clearing the cells in the spreadsheet. To completely remove the application&apos;s access to your data,
+                you may uninstall the add-on or revoke its permissions via the
+                <a
+                  href="https://myaccount.google.com/connections?filters=3,4&hl=en"
+                  className="text-primary underline underline-offset-2"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Google Security Settings page
+                </a>
+                .
+              </p>
+            </div>
           </div>
 
           <div>
