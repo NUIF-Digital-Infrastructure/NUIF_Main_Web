@@ -41,7 +41,7 @@ export default function HumanNetworkMaintainerPage() {
         </section>
 
         <section className="mt-12 rounded-lg border border-gray-200 bg-gray-50 px-6 py-5">
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-gray-600">Developer(s)</h2>
+          <h2 className="text-sm font-semibold uppercase tracking-widest text-gray-600">Developed and maintained by for the Newcastle University Investment Fund: </h2>
           {developer ? (
             <p className="mt-2 text-lg text-gray-900">
               {" "}
@@ -51,7 +51,7 @@ export default function HumanNetworkMaintainerPage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                {developerDisplayName}
+                {developerDisplayName} | Contact: samraat1official8@gmail.com
               </Link>
             </p>
           ) : (
