@@ -1,6 +1,13 @@
 import Link from "next/link"
 
+import { teamPageContent } from "@/data/our-team"
+
 export default function HumanNetworkMaintainerPage() {
+  const developer = teamPageContent.members.digitalInfrastructure.find(({ name }) =>
+    name.toLowerCase().includes("samraat jain"),
+  )
+  const developerDisplayName = developer?.name.replace(/\s*\(.+\)$/, "") ?? "Samraat Jain"
+
   return (
     <main className="bg-white py-16">
       <div className="container mx-auto max-w-4xl px-6">
@@ -31,6 +38,25 @@ export default function HumanNetworkMaintainerPage() {
             privacy-first data practices, running entirely within your Google Workspace so your contact information never
             leaves your control.
           </p>
+        </section>
+
+        <section className="mt-12 rounded-lg border border-gray-200 bg-gray-50 px-6 py-5">
+          <h2 className="text-sm font-semibold uppercase tracking-widest text-gray-600">Developer(s)</h2>
+          {developer ? (
+            <p className="mt-2 text-lg text-gray-900">
+              {" "}
+              <Link
+                href={developer.link}
+                className="text-indigo-600 underline decoration-indigo-200 underline-offset-4 transition hover:text-indigo-500"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {developerDisplayName}
+              </Link>
+            </p>
+          ) : (
+            <p className="mt-2 text-lg text-gray-700">Developer(s): Samraat Jain</p>
+          )}
         </section>
       </div>
     </main>
