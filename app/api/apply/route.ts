@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { buildRateLimitHeaders, checkApplyRateLimit, getClientIp } from "@/lib/rate-limit";
+import { escapeHtml, escapeHtmlWithLineBreaks } from "@/lib/security";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -25,6 +27,15 @@ const ApplicationTemplate = ({
   motivation: string;
   hasCV: boolean;
 }) => {
+  const safeDisplayName = escapeHtml(displayName);
+  const safeEmail = escapeHtml(email);
+  const safeStudentId = escapeHtml(studentId);
+  const safeAcademicYear = escapeHtml(academicYear);
+  const safePosition = escapeHtml(position);
+  const safePositionReason = escapeHtmlWithLineBreaks(positionReason);
+  const safeMotivation = escapeHtmlWithLineBreaks(motivation);
+  const safeSectors = sectors?.map((sector) => `<li>${escapeHtml(sector)}</li>`).join("") ?? "";
+
   return `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <h1 style="color: #333; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 15px;">
@@ -33,24 +44,24 @@ const ApplicationTemplate = ({
       
       <div style="background-color: #f5f5f5; border-radius: 5px; padding: 20px; margin-bottom: 20px;">
         <h2 style="color: #444; margin-top: 0;">Personal Information</h2>
-        <p><strong>Full Name:</strong> ${displayName}</p>
-        <p><strong>University Email:</strong> ${email}</p>
-        <p><strong>University ID:</strong> ${studentId}</p>
-        <p><strong>Academic Year (2025/2026):</strong> ${academicYear}</p>
+        <p><strong>Full Name:</strong> ${safeDisplayName}</p>
+        <p><strong>University Email:</strong> ${safeEmail}</p>
+        <p><strong>University ID:</strong> ${safeStudentId}</p>
+        <p><strong>Academic Year (2025/2026):</strong> ${safeAcademicYear}</p>
       </div>
       
       <div style="background-color: #f5f5f5; border-radius: 5px; padding: 20px; margin-bottom: 20px;">
         <h2 style="color: #444; margin-top: 0;">Position Details</h2>
-        <p><strong>Position Applied For:</strong> ${position}</p>
+        <p><strong>Position Applied For:</strong> ${safePosition}</p>
         <p><strong>Reason for Position:</strong></p>
         <div style="background-color: white; padding: 10px; border-radius: 3px;">
-          ${positionReason.split("\n").join("<br>")}
+          ${safePositionReason}
         </div>
         
         <p><strong>Preferred Sectors:</strong></p>
         ${sectors && sectors.length > 0 ? `
           <ul>
-            ${sectors.map(sector => `<li>${sector}</li>`).join("")}
+            ${safeSectors}
           </ul>
         ` : '<p>None selected</p>'}
       </div>
@@ -58,7 +69,7 @@ const ApplicationTemplate = ({
       <div style="background-color: #f5f5f5; border-radius: 5px; padding: 20px; margin-bottom: 20px;">
         <h2 style="color: #444; margin-top: 0;">Motivation</h2>
         <div style="background-color: white; padding: 10px; border-radius: 3px;">
-          ${motivation.split("\n").join("<br>")}
+          ${safeMotivation}
         </div>
       </div>
       
@@ -76,6 +87,17 @@ const ApplicationTemplate = ({
 
 export async function POST(request: Request) {
   try {
+    const clientIp = getClientIp(request);
+    const rateLimitResult = await checkApplyRateLimit(clientIp);
+    const rateLimitHeaders = buildRateLimitHeaders(rateLimitResult);
+
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        { error: "Too many applications submitted. Please try again later." },
+        { status: 429, headers: rateLimitHeaders }
+      );
+    }
+
     const formData = await request.formData();
     
     // Extract form fields
@@ -85,8 +107,27 @@ export async function POST(request: Request) {
     const academicYear = formData.get("academicYear") as string;
     const position = formData.get("position") as string;
     const positionReason = formData.get("positionReason") as string;
-    const sectorsJson = formData.get("sectors") as string;
-    const sectors = sectorsJson ? JSON.parse(sectorsJson) as string[] : [];
+    const sectorsJson = formData.get("sectors") as string | null;
+    let sectors: string[] = [];
+
+    if (sectorsJson) {
+      try {
+        const parsed = JSON.parse(sectorsJson);
+        if (!Array.isArray(parsed) || !parsed.every((item) => typeof item === "string")) {
+          return NextResponse.json(
+            { error: "Invalid sectors format" },
+            { status: 400, headers: rateLimitHeaders }
+          );
+        }
+        sectors = parsed;
+      } catch {
+        return NextResponse.json(
+          { error: "Invalid sectors format" },
+          { status: 400, headers: rateLimitHeaders }
+        );
+      }
+    }
+
     const motivation = formData.get("motivation") as string;
     const cv = formData.get("cv") as File;
     const applicationCount = parseInt(formData.get("applicationCount") as string || "1");
@@ -109,14 +150,14 @@ export async function POST(request: Request) {
         !positionReason || !motivation || !cv) {
       return NextResponse.json(
         { error: "All fields are required" },
-        { status: 400 }
+        { status: 400, headers: rateLimitHeaders }
       );
     }
     
     if (!email.endsWith('@newcastle.ac.uk')) {
       return NextResponse.json(
         { error: "Please use your Newcastle University email address" },
-        { status: 400 }
+        { status: 400, headers: rateLimitHeaders }
       );
     }
     
@@ -125,10 +166,13 @@ export async function POST(request: Request) {
       if (!Array.isArray(sectors) || sectors.length !== 3) {
         return NextResponse.json(
           { error: "Please select exactly 3 sectors" },
-          { status: 400 }
+          { status: 400, headers: rateLimitHeaders }
         );
       }
     }
+
+    const safeFileName = (cv.name || "cv").replace(/[\r\n\\/]+/g, "_");
+    const safeFormattedName = formattedName.replace(/[\r\n]+/g, " ").trim();
     
     const fileArrayBuffer = await cv.arrayBuffer();
     const fileBuffer = Buffer.from(fileArrayBuffer);
@@ -136,7 +180,7 @@ export async function POST(request: Request) {
     const { data, error } = await resend.emails.send({
       from: "NUIF Applications <onboarding@resend.dev>",
       to: ["newcastleinvestmentfund@gmail.com"],
-      subject: `NUIF Application: ${formattedName}`,
+      subject: `NUIF Application: ${safeFormattedName}`,
       html: ApplicationTemplate({
         displayName: formattedName,
         email,
@@ -148,9 +192,30 @@ export async function POST(request: Request) {
         motivation,
         hasCV: true
       }),
+      text: [
+        "New NUIF Application",
+        "",
+        `Full Name: ${safeFormattedName}`,
+        `University Email: ${email}`,
+        `University ID: ${studentId}`,
+        `Academic Year (2025/2026): ${academicYear}`,
+        "",
+        `Position Applied For: ${position}`,
+        "Reason for Position:",
+        positionReason,
+        "",
+        `Preferred Sectors: ${sectors.length > 0 ? sectors.join(", ") : "None selected"}`,
+        "",
+        "Motivation:",
+        motivation,
+        "",
+        `CV: ${cv ? "CV attached to this email" : "No CV attached"}`,
+        "",
+        "Submitted via the NUIF Application Form"
+      ].join("\n"),
       attachments: [
         {
-          filename: cv.name,
+          filename: safeFileName,
           content: fileBuffer
         }
       ],
@@ -158,10 +223,10 @@ export async function POST(request: Request) {
 
     if (error) {
       console.error("Resend API error:", error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: error.message }, { status: 500, headers: rateLimitHeaders });
     }
 
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json({ success: true, data }, { headers: rateLimitHeaders });
   } catch (error: any) {
     console.error("Application submission error:", error);
     return NextResponse.json(
