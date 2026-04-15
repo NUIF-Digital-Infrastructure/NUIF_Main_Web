@@ -11,6 +11,15 @@ export default function HumanNetworkMaintainerPage() {
   return (
     <main className="bg-white py-16">
       <div className="container mx-auto max-w-4xl px-6">
+        <div>
+          <Link
+            href="/tools"
+            className="inline-flex items-center rounded-md border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-sm font-semibold text-indigo-600 transition hover:border-indigo-300 hover:bg-indigo-100 hover:text-indigo-700"
+          >
+            Back to Tools
+          </Link>
+        </div>
+
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-widest text-indigo-600">Digital Infrastructure</p>

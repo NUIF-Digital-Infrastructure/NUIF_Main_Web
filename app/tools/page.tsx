@@ -7,6 +7,12 @@ const tools = [
       "A Google Sheets add-on that keeps relationship-building top of mind with gentle reminder workflows.",
     href: "/tools/humannetworkmaintainer",
   },
+  {
+    name: "News Impact Calculator",
+    description:
+      "A research prompt module for news event impact on equities.",
+    href: "/tools/newsimpactcalculator",
+  },
 ]
 
 export default function ToolsPage() {
