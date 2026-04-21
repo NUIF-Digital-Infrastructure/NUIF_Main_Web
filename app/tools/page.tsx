@@ -13,6 +13,12 @@ const tools = [
       "A research prompt module for news event impact on equities.",
     href: "/tools/newsimpactcalculator",
   },
+   {
+    name: "Stock Compliance Tool",
+    description:
+      "A 7 step tool that checks and assesses stocks in a restricted sector for growth, and verifies that it is below 10% of group revenue to qualify for investment",
+    href: "/tools/stockcompliancetool",
+  },
 ]
 
 export default function ToolsPage() {
