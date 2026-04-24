@@ -1,59 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-</head>
-<body>
-<div class="container">
-  <h1>Stock Compliance Tool</h1>
-
-  <input id="ticker" placeholder="Enter ticker (AAPL, RTX, MSFT, BAC, PM)" oninput="this.value=this.value.toUpperCase()" />
-  <button class="btn-primary" onclick="startCheck()">Start Check</button>
-
-  <div id="stock-card" class="stock-card">
-    <div class="name" id="s-name"></div>
-    <div class="info" id="s-info"></div>
-    <div class="sector" id="s-sector"></div>
-  </div>
-
-  <div id="step-box" class="step-box">
-    <div class="step-label" id="step-label"></div>
-    <p id="step-question"></p>
-    <div class="step-actions">
-      <button class="btn-yes" id="btn-yes" onclick="handleYes()">Yes</button>
-      <button class="btn-no"  id="btn-no"  onclick="handleNo()">No</button>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stock Compliance Tool</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h1>Stock Compliance Tool</h1>
-
-      <input
-        id="ticker"
-        placeholder="Enter ticker (AAPL, RTX, MSFT, BAC, PM)"
-        oninput="this.value=this.value.toUpperCase()"
-      />
-      <button class="btn-primary" onclick="startCheck()">Start Check</button>
-
-      <div id="stock-card" class="stock-card">
-        <div class="name" id="s-name"></div>
-        <div class="info" id="s-info"></div>
-        <div class="sector" id="s-sector"></div>
-      </div>
-
-      <div id="step-box" class="step-box">
-        <div class="step-label" id="step-label"></div>
-        <p id="step-question"></p>
-        <div class="step-actions">
-          <button class="btn-yes" id="btn-yes" onclick="handleYes()">Yes</button>
-          <button class="btn-no" id="btn-no" onclick="handleNo()">No</button>
-        </div>
-      </div>
-
-      <div id="result-box" class="result"></div>
-    </div>
-    <script src="app.js"></script>
-  </body>
-</html>
+1	<!DOCTYPE html>
+2	<html lang="en">
+3	  <head>
+4	    <meta charset="UTF-8" />
+5	    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+6	    <title>Stock Compliance Tool</title>
+7	    <link rel="stylesheet" href="styles.css" />
+8	  </head>
+9	  <body>
+10	    <div class="container">
+11	      <h1>Stock Compliance Tool</h1>
+12	
+13	      <input
+14	        id="ticker"
+15	        placeholder="Enter ticker (AAPL, RTX, MSFT, BAC, PM)"
+16	        oninput="this.value=this.value.toUpperCase()"
+17	      />
+18	      <button class="btn-primary" onclick="startCheck()">Start Check</button>
+19	
+20	      <div id="stock-card" class="stock-card">
+21	        <div class="name" id="s-name"></div>
+22	        <div class="info" id="s-info"></div>
+23	        <div class="sector" id="s-sector"></div>
+24	      </div>
+25	
+26	      <div id="step-box" class="step-box">
+27	        <div class="step-label" id="step-label"></div>
+28	        <p id="step-question"></p>
+29	        <div class="step-actions">
+30	          <button class="btn-yes" id="btn-yes" onclick="handleYes()">Yes</button>
+31	          <button class="btn-no" id="btn-no" onclick="handleNo()">No</button>
+32	        </div>
+33	      </div>
+34	
+35	      <div id="result-box" class="result"></div>
+36	    </div>
+37	    <script src="app.js"></script>
+38	  </body>
+39	</html>
+40
