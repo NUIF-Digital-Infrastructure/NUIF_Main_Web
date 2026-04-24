@@ -6,11 +6,11 @@ const RESTRICTED_SECTORS = [
 ];
 
 const STOCKS = {
-  AAPL: { name:"Apple Inc.",             sector:"Technology",       info:"Market Cap: $3.2T | Consumer Electronics" },
-  RTX:  { name:"Raytheon Technologies",  sector:"Defence",          info:"Defense & Aerospace" },
-  BAC:  { name:"Bank of America",        sector:"Finance",          info:"Banking Services" },
-  PM:   { name:"Philip Morris",          sector:"Consumer Staples", info:"Tobacco" },
-  MSFT: { name:"Microsoft",              sector:"Technology",       info:"Cloud + 8% defence exposure" },
+  AAPL: { name:"Apple Inc.",             sector:"Technology",       info:"Market Cap: $3.2T | Consumer Electronics", revenuePercent: 0 },
+  RTX:  { name:"Raytheon Technologies",  sector:"Defence",          info:"Defense & Aerospace",                      revenuePercent: 95 },
+  BAC:  { name:"Bank of America",        sector:"Finance",          info:"Banking Services",                         revenuePercent: 0 },
+  PM:   { name:"Philip Morris",          sector:"Consumer Staples", info:"Tobacco",                                  revenuePercent: 0 },
+  MSFT: { name:"Microsoft",              sector:"Defence",          info:"Cloud + 8% defence exposure",              revenuePercent: 8 },
 };
 
 let stock = null, step = 0;
