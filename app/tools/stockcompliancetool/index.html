@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+</head>
+<body>
+<div class="container">
+  <h1>Stock Compliance Tool</h1>
+
+  <input id="ticker" placeholder="Enter ticker (AAPL, RTX, MSFT, BAC, PM)" oninput="this.value=this.value.toUpperCase()" />
+  <button class="btn-primary" onclick="startCheck()">Start Check</button>
+
+  <div id="stock-card" class="stock-card">
+    <div class="name" id="s-name"></div>
+    <div class="info" id="s-info"></div>
+    <div class="sector" id="s-sector"></div>
+  </div>
+
+  <div id="step-box" class="step-box">
+    <div class="step-label" id="step-label"></div>
+    <p id="step-question"></p>
+    <div class="step-actions">
+      <button class="btn-yes" id="btn-yes" onclick="handleYes()">Yes</button>
+      <button class="btn-no"  id="btn-no"  onclick="handleNo()">No</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Compliance Tool</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Stock Compliance Tool</h1>
+
+      <input
+        id="ticker"
+        placeholder="Enter ticker (AAPL, RTX, MSFT, BAC, PM)"
+        oninput="this.value=this.value.toUpperCase()"
+      />
+      <button class="btn-primary" onclick="startCheck()">Start Check</button>
+
+      <div id="stock-card" class="stock-card">
+        <div class="name" id="s-name"></div>
+        <div class="info" id="s-info"></div>
+        <div class="sector" id="s-sector"></div>
+      </div>
+
+      <div id="step-box" class="step-box">
+        <div class="step-label" id="step-label"></div>
+        <p id="step-question"></p>
+        <div class="step-actions">
+          <button class="btn-yes" id="btn-yes" onclick="handleYes()">Yes</button>
+          <button class="btn-no" id="btn-no" onclick="handleNo()">No</button>
+        </div>
+      </div>
+
+      <div id="result-box" class="result"></div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
