@@ -119,11 +119,11 @@ export default function ComplianceBox(props: { stocks: Record<string, Stock>, re
                     value={ticker}
                     onChange={(e) => setTicker(e.target.value.toUpperCase())}
                     placeholder="Enter ticker (AAPL, RTX, MSFT, BAC, PM)"
-                    className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 outline-none transition"
+                    className="w-full rounded-xl border border-gray-300 px-4 py-2 text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 outline-none transition"
                 />
                 <button
                     onClick={startCheck}
-                    className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="w-full rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                     Start Check
                 </button>
