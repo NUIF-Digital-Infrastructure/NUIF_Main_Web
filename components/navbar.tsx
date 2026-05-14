@@ -32,6 +32,9 @@ export default function Navbar() {
           <Link href="/research" className="text-blue-900 hover:text-blue-700 transition-colors">
             RESEARCH
           </Link>
+          <Link href="/tools" className="text-blue-900 hover:text-blue-700 transition-colors">
+            TOOLS
+          </Link>
           <Link href="/apply" className="text-blue-900 hover:text-blue-700 transition-colors">
             APPLY
           </Link>
@@ -74,6 +77,13 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
             >
               RESEARCH
+            </Link>
+            <Link
+              href="/tools"
+              className="text-blue-900 hover:text-blue-700 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              TOOLS
             </Link>
             <Link
               href="/apply"
