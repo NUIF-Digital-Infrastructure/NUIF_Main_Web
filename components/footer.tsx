@@ -40,12 +40,6 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-8 pt-8 text-gray-400">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
             <p>&copy; {new Date().getFullYear()} Newcastle University Investment Fund. All rights reserved.</p>
-            <Link
-              href="/tools"
-              className="font-medium text-white hover:text-gray-300 transition-colors"
-            >
-              Tools
-            </Link>
           </div>
         </div>
       </div>
