@@ -1,4 +1,8 @@
 import Link from "next/link"
+import Navbar from "@/components/navbar"
+import Footer from "@/components/footer"
+import ParallaxHero from "@/components/parallax-hero"
+import Background from "@/assets/background_6.jpg"
 
 const tools = [
   {
@@ -23,27 +27,39 @@ const tools = [
 
 export default function ToolsPage() {
   return (
-    <main className="bg-white py-16">
-      <div className="container mx-auto px-6 max-w-4xl">
-        <p className="text-sm font-semibold uppercase tracking-widest text-indigo-600">Digital Infrastructure</p>
-        <h1 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl">
-          Tools Developed by the Digital Infrastructure Team
-        </h1>
-        <p className="mt-3 text-lg text-gray-600">
-          Explore the internal tools we build to support the Newcastle University Investment Fund community.
-        </p>
+    <main className="min-h-screen">
+      <Navbar />
 
-        <ul className="mt-10 space-y-6 list-disc pl-6 text-lg text-gray-900">
-          {tools.map((tool) => (
-            <li key={tool.name} className="leading-relaxed">
-              <Link href={tool.href} className="font-semibold text-indigo-600 hover:text-indigo-500">
-                {tool.name}
-              </Link>
-              <p className="text-base font-normal text-gray-600">{tool.description}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ParallaxHero
+        image={Background}
+        title="Digital Tools"
+        subtitle="Developed by the Digital Infrastructure team"
+      />
+
+      <section className="py-20 px-6 bg-gray-100">
+        <div className="container mx-auto">
+          <div className="max-w-4xl mx-auto">
+            <div className="space-y-8">
+              {tools.map((tool) => (
+                <Link
+                  key={tool.name}
+                  href={tool.href}
+                  className="block rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-lg hover:bg-gray-50"
+                >
+                  <h3 className="text-xl font-bold text-blue-900 mb-2">
+                    {tool.name}
+                  </h3>
+                  <p className="text-gray-600">
+                    {tool.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
     </main>
   )
 }
