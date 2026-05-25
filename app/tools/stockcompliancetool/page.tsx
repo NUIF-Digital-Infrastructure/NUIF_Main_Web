@@ -58,9 +58,9 @@ type Step1Data = {
 }
 
 type Step2Data = {
-  restrictedRevenue: number | null   // auto-fetched for US stocks; null = not available
-  groupRevenue: number | null // manually entered by user (parent company total)
-  isStandalone: boolean       // true = no parent, treated as 100%
+  restrictedRevenue: number | null
+  groupRevenue: number | null
+  isStandalone: boolean
   percentage: number
   belowThreshold: boolean
   year: string
@@ -77,11 +77,18 @@ type Step4Data = {
   controversyScore: number | null
   recentHeadlines: { title: string; date: string; url: string }[]
   hasFlags: boolean
+  flagDetails: string
+  flagSources: string
 }
 
 type Step5Data = {
   exclusionViolation: boolean
   violationDetails: string
+  sources: string
+  restrictedRevenue: number | null
+  groupRevenue: number | null
+  isStandalone: boolean
+  percentage: number
 }
 
 type Step6Data = {
@@ -93,6 +100,7 @@ type Step6Data = {
 type Step7Data = {
   isCorrected: boolean
   correctionDetails: string
+  sources: string
 }
 
 type ComplianceReport = {
@@ -235,12 +243,16 @@ export default function StockComplianceToolPage() {
   const [restrictedRevenueInput, setRestrictedRevenueInput] = useState("")
   const [isStandalone, setIsStandalone] = useState(false)
 
+  // Step 5 revenue inputs (mirrors Step 2)
+  const [s5RestrictedRevenueInput, setS5RestrictedRevenueInput] = useState("")
+  const [s5GroupRevenueInput, setS5GroupRevenueInput] = useState("")
+  const [s5IsStandalone, setS5IsStandalone] = useState(false)
+
   // Manual inputs for Step 3
   const [selectedSdgs, setSelectedSdgs] = useState<string[]>([])
   const [hasSustainabilityManual, setHasSustainabilityManual] = useState<boolean | null>(null)
 
   // Manual inputs for Steps 5–7
-  const [s5ViolationDetails, setS5ViolationDetails] = useState("")
   const [s5HasViolation, setS5HasViolation] = useState<boolean | null>(null)
 
   const [s6HasEvidence, setS6HasEvidence] = useState<boolean | null>(null)
@@ -249,11 +261,11 @@ export default function StockComplianceToolPage() {
 
   const [s7IsCorrected, setS7IsCorrected] = useState<boolean | null>(null)
   const [s4HasFlags, setS4HasFlags] = useState<boolean | null>(null)
+  const [s4FlagDetails, setS4FlagDetails] = useState("")
+  const [s4FlagSources, setS4FlagSources] = useState("")
+  const [s5Sources, setS5Sources] = useState("")
   const [s7CorrectionDetails, setS7CorrectionDetails] = useState("")
-
-  // Claude AI research summary
-  const [aiSummary, setAiSummary] = useState<string | null>(null)
-  const [aiLoading, setAiLoading] = useState(false)
+  const [s7Sources, setS7Sources] = useState("")
 
   const reportRef = useRef<HTMLDivElement>(null)
 
@@ -262,7 +274,6 @@ export default function StockComplianceToolPage() {
     if (!step1) return "PENDING"
 
     if (isAlreadyInvested) {
-      // Already invested – skip steps 1-3, evaluate from step 4 onwards
       if (!step4) return "PENDING"
       if (!step4.hasFlags) return "HOLD"
       if (!step5) return "PENDING"
@@ -273,7 +284,6 @@ export default function StockComplianceToolPage() {
       return step7.isCorrected ? "HOLD" : "DISINVEST"
     }
 
-    // New investment – full 7-step flow
     if (!step1.isRestricted) return "INVEST"
     if (!step2) return "PENDING"
     if (!step2.belowThreshold) return "DO NOT INVEST"
@@ -317,7 +327,7 @@ export default function StockComplianceToolPage() {
       },
       {
         label: "Sustainability Goals",
-        status: isAlreadyInvested ? "na" : step1 && !step1.isRestricted ? "na" : s2 === "fail" ? "na" : s3,
+        status: isAlreadyInvested ? "na" : (s1 === "pass" && !step1?.isRestricted) ? "na" : s2 === "fail" ? "na" : s3,
         summary: isAlreadyInvested
             ? "Not applicable – stock already held in portfolio"
             : step1 && !step1.isRestricted
@@ -340,7 +350,9 @@ export default function StockComplianceToolPage() {
                 : s3 === "fail"
                     ? "Not applicable – no sustainability alignment"
                     : step4
-                        ? step4.hasFlags ? "Concern flags noted" : "No flags detected"
+                        ? step4.hasFlags
+                            ? `Concern flags noted${step4.flagDetails ? `: ${step4.flagDetails.slice(0, 80)}${step4.flagDetails.length > 80 ? "…" : ""}` : ""}`
+                            : "No flags detected"
                         : "–",
       },
       {
@@ -352,8 +364,8 @@ export default function StockComplianceToolPage() {
                 ? "Not applicable – no flags detected"
                 : step5
                     ? step5.exclusionViolation
-                        ? `Violation confirmed: ${step5.violationDetails}`
-                        : "No exclusion violation"
+                        ? `Violation confirmed: restricted revenue ${step5.percentage.toFixed(2)}% of group`
+                        : `No exclusion violation – restricted revenue ${step5.percentage.toFixed(2)}% of group`
                     : "–",
       },
       {
@@ -401,7 +413,7 @@ export default function StockComplianceToolPage() {
     }
   }
 
-  // ── Step 1: Verify stock + sector check ──────────────────────
+  // ── Step 1 ────────────────────────────────────────────────────
   const handleStep1 = async () => {
     const trimmed = ticker.trim().toUpperCase()
     if (!trimmed) { setError("Please enter a ticker symbol."); return }
@@ -409,15 +421,15 @@ export default function StockComplianceToolPage() {
     setLoading(true)
     setError(null)
     setS1("loading")
-    // Reset downstream steps
     setStep1(null); setStep2(null); setStep3(null)
     setStep4(null); setStep5(null); setStep6(null); setStep7(null)
     setS2("idle"); setS3("idle"); setS4("idle"); setS5("idle"); setS6("idle"); setS7("idle")
-    setAiSummary(null)
     setSelectedSdgs([]); setHasSustainabilityManual(null); setS4HasFlags(null); setIsAlreadyInvested(null)
+    setS4FlagDetails(""); setS4FlagSources("")
+    setS5RestrictedRevenueInput(""); setS5GroupRevenueInput(""); setS5IsStandalone(false); setS5HasViolation(null); setS5Sources("")
+    setS7Sources("")
 
     try {
-      // Company profile
       const profileRes = await fetch(
           `https://financialmodelingprep.com/stable/profile?symbol=${trimmed}&apikey=${FMP_API_KEY}`
       )
@@ -458,7 +470,7 @@ export default function StockComplianceToolPage() {
     }
   }
 
-  // ── Step 2: Revenue threshold ─────────────────────────────────
+  // ── Step 2 ────────────────────────────────────────────────────
   const handleStep2Submit = () => {
     setError(null)
 
@@ -469,15 +481,14 @@ export default function StockComplianceToolPage() {
     }
 
     if (isStandalone) {
-      const updated: Step2Data = {
+      setStep2({
         restrictedRevenue: restricted,
         groupRevenue: restricted,
         isStandalone: true,
         percentage: 100,
         belowThreshold: false,
         year: "N/A",
-      }
-      setStep2(updated)
+      })
       setS2("fail")
       return
     }
@@ -505,7 +516,7 @@ export default function StockComplianceToolPage() {
     setS2(below ? "pass" : "fail")
   }
 
-  // ── Step 3: Sustainability ──────────────────────────────────
+  // ── Step 3 ────────────────────────────────────────────────────
   const handleStep3Submit = () => {
     if (hasSustainabilityManual === null) {
       setError("Please indicate whether the stock aligns with any sustainability goals.")
@@ -521,98 +532,118 @@ export default function StockComplianceToolPage() {
     setS3(hasSustainabilityManual ? "pass" : "fail")
   }
 
-  // ── Step 4: Monitoring flags ────────────────────────────────
-  const handleStep4Submit = (hasFlags: boolean) => {
-    setStep4({ controversyScore: null, recentHeadlines: [], hasFlags })
-    setS4(hasFlags ? "flag" : "pass")
+  // ── Step 4 ────────────────────────────────────────────────────
+  const handleStep4Submit = () => {
+    if (s4HasFlags === null) return
+    setStep4({ controversyScore: null, recentHeadlines: [], hasFlags: s4HasFlags, flagDetails: s4FlagDetails, flagSources: s4FlagSources })
+    setS4(s4HasFlags ? "flag" : "pass")
   }
 
-  // ── Step 5: Manual exclusion violation check ──────────────────
+  // ── Step 5: Revenue threshold check (mirrors Step 2) ──────────
   const handleStep5Submit = () => {
+    setError(null)
+
     if (s5HasViolation === null) {
       setError("Please indicate whether an exclusion violation exists.")
       return
     }
-    setError(null)
-    const data: Step5Data = {
-      exclusionViolation: s5HasViolation,
-      violationDetails: s5ViolationDetails,
-    }
-    setStep5(data)
-    setS5(s5HasViolation ? "fail" : "pass")
-  }
 
-  // ── Step 6: Claude AI + manual unethical evidence check ───────
-  const fetchAiSummary = async () => {
-    if (!step1) return
-    setAiLoading(true)
-    try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system:
-              "You are a financial compliance researcher. When given a company name and ticker, provide a concise 3–5 bullet summary of any known controversies, ethical concerns, legal violations, or ESG issues that have been publicly reported. Use only factual, publicly known information. If none are known, state that clearly. Format as bullet points starting with •",
-          messages: [
-            {
-              role: "user",
-              content: `Research company: ${step1.profile.companyName} (${step1.profile.ticker}). Sector: ${step1.profile.sector}. Provide a compliance research summary focusing on ethical controversies, legal violations, forced labor allegations, environmental violations, or governance failures.`,
-            },
-          ],
-        }),
+    // If user said No – no violation
+    if (!s5HasViolation) {
+      setStep5({
+        exclusionViolation: false,
+        violationDetails: "",
+        sources: "",
+        restrictedRevenue: null,
+        groupRevenue: null,
+        isStandalone: false,
+        percentage: 0,
       })
-      const data = await res.json()
-      const text =
-          data?.content
-              ?.filter((b: { type: string }) => b.type === "text")
-              .map((b: { text: string }) => b.text)
-              .join("\n") ?? "No summary available."
-      setAiSummary(text)
-    } catch {
-      setAiSummary("Could not load AI summary. Please conduct manual research.")
-    } finally {
-      setAiLoading(false)
+      setS5("pass")
+      return
     }
+
+    // Yes – compute from revenue inputs
+    const restricted = parseFloat(s5RestrictedRevenueInput)
+    if (isNaN(restricted) || restricted < 0) {
+      setError("Please enter a valid restricted segment revenue.")
+      return
+    }
+
+    if (s5IsStandalone) {
+      setStep5({
+        exclusionViolation: true,
+        violationDetails: "Standalone entity – treated as 100% restricted revenue.",
+        sources: s5Sources,
+        restrictedRevenue: restricted,
+        groupRevenue: restricted,
+        isStandalone: true,
+        percentage: 100,
+      })
+      setS5("fail")
+      return
+    }
+
+    const group = parseFloat(s5GroupRevenueInput)
+    if (isNaN(group) || group <= 0) {
+      setError("Please enter a valid parent group revenue greater than zero.")
+      return
+    }
+    if (group < restricted) {
+      setError("Group revenue cannot be less than the restricted segment revenue.")
+      return
+    }
+
+    const pct = (restricted / group) * 100
+    const isViolation = pct >= 10
+
+    setStep5({
+      exclusionViolation: isViolation,
+      violationDetails: isViolation
+          ? `Restricted segment revenue is ${pct.toFixed(2)}% of group revenue, exceeding the 10% threshold.`
+          : "",
+      sources: s5Sources,
+      restrictedRevenue: restricted,
+      groupRevenue: group,
+      isStandalone: false,
+      percentage: pct,
+    })
+    setS5(isViolation ? "fail" : "pass")
   }
 
+  // ── Step 6 ────────────────────────────────────────────────────
   const handleStep6Submit = () => {
     if (s6HasEvidence === null) {
       setError("Please indicate whether unethical evidence exists.")
       return
     }
     setError(null)
-    const data: Step6Data = {
+    setStep6({
       unethicalEvidence: s6HasEvidence,
       evidenceDetails: s6EvidenceDetails,
       sources: s6Sources,
-    }
-    setStep6(data)
+    })
     setS6(s6HasEvidence ? "flag" : "pass")
   }
 
-  // ── Step 7: Remediation ───────────────────────────────────────
+  // ── Step 7 ────────────────────────────────────────────────────
   const handleStep7Submit = () => {
     if (s7IsCorrected === null) {
       setError("Please indicate whether the issue has been corrected.")
       return
     }
     setError(null)
-    const data: Step7Data = {
+    setStep7({
       isCorrected: s7IsCorrected,
       correctionDetails: s7CorrectionDetails,
-    }
-    setStep7(data)
+      sources: s7Sources,
+    })
     setS7(s7IsCorrected ? "pass" : "fail")
   }
 
-  // ── Print / export ────────────────────────────────────────────
   const handlePrint = () => window.print()
 
-  // ─────────────────────────────────────────────
-  // Derived flags for step locking
-  // ─────────────────────────────────────────────
+  // ── Derived locking flags ─────────────────────────────────────
   const step2Unlocked = !isAlreadyInvested && !!step1 && step1.isRestricted
   const step3Unlocked = !isAlreadyInvested && !!step2 && s2 === "pass"
   const step4Unlocked = isAlreadyInvested ? !!step1 : (!!step3 && s3 === "pass")
@@ -620,7 +651,6 @@ export default function StockComplianceToolPage() {
   const step6Unlocked = !!step5 && !step5.exclusionViolation
   const step7Unlocked = !!step6 && step6.unethicalEvidence
 
-  // Display statuses for step cards – N/A when bypassed by earlier decision (page only)
   const display2 = isAlreadyInvested ? "na"
       : (s1 === "pass" && !step1?.isRestricted) ? "na"
           : s2
@@ -647,7 +677,7 @@ export default function StockComplianceToolPage() {
   const showReport =
       s1 !== "idle" && isAlreadyInvested !== null && (
           isAlreadyInvested
-              ? (s4 !== "idle")   // already invested — show report once step 4 is done
+              ? (s4 !== "idle")
               : (s1 === "pass" || s2 === "fail" || s3 === "fail" ||
                   (s4 !== "idle" && !step4?.hasFlags) || s5 === "fail" ||
                   (s6 !== "idle" && !step6?.unethicalEvidence) || s7 !== "idle")
@@ -656,9 +686,18 @@ export default function StockComplianceToolPage() {
   const fmt = (n: number) =>
       n >= 1e9 ? `$${(n / 1e9).toFixed(2)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${n.toLocaleString()}`
 
+  // ── Live preview helper for Step 5 ───────────────────────────
+  const s5LivePct =
+      !s5IsStandalone &&
+      s5RestrictedRevenueInput &&
+      s5GroupRevenueInput &&
+      parseFloat(s5RestrictedRevenueInput) > 0 &&
+      parseFloat(s5GroupRevenueInput) > 0
+          ? (parseFloat(s5RestrictedRevenueInput) / parseFloat(s5GroupRevenueInput)) * 100
+          : null
+
   return (
       <>
-        {/* Print styles */}
         <style>{`
         @media print {
           body * { visibility: hidden; }
@@ -692,7 +731,7 @@ export default function StockComplianceToolPage() {
               </div>
             </div>
 
-            {/* ── STEP 1 ─────────────────────────────────────────────── */}
+            {/* ── STEP 1 ───────────────────────────────────────────── */}
             <StepCard number={1} title="Restricted Sector Check" status={s1} locked={false}>
               <p className="text-sm text-gray-500 mb-3">
                 Enter a stock ticker. We&apos;ll verify the company and check if it operates in one of the
@@ -716,9 +755,7 @@ export default function StockComplianceToolPage() {
                 </button>
               </div>
 
-              {error && (
-                  <p className="mt-3 text-sm text-red-600">{error}</p>
-              )}
+              {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
 
               {step1 && (
                   <div className="mt-4 space-y-3">
@@ -733,7 +770,6 @@ export default function StockComplianceToolPage() {
                       )}
                     </div>
 
-                    {/* Already invested prompt */}
                     <div className="rounded-md border border-indigo-200 bg-indigo-50 px-4 py-4">
                       <p className="text-sm font-semibold text-indigo-800 mb-3">
                         Is this stock already held in the portfolio?
@@ -769,7 +805,6 @@ export default function StockComplianceToolPage() {
                       )}
                     </div>
 
-                    {/* Sector result — only show for new investments */}
                     {isAlreadyInvested === false && (
                         step1.isRestricted ? (
                             <div className="rounded-md bg-amber-100 border border-amber-200 px-4 py-2 text-sm text-amber-800">
@@ -785,7 +820,7 @@ export default function StockComplianceToolPage() {
               )}
             </StepCard>
 
-            {/* ── STEP 2 ─────────────────────────────────────────────── */}
+            {/* ── STEP 2 ───────────────────────────────────────────── */}
             <StepCard
                 number={2}
                 title="Revenue Threshold – Below 10% of Group Revenue?"
@@ -794,10 +829,9 @@ export default function StockComplianceToolPage() {
             >
               <div className="space-y-4">
                 <p className="text-sm text-gray-600">
-                  Enter the revenue figures from the company’s latest annual report or filings.
+                  Enter the revenue figures from the company's latest annual report or filings.
                 </p>
 
-                {/* Restricted segment revenue */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Restricted Segment Revenue
@@ -817,7 +851,6 @@ export default function StockComplianceToolPage() {
                   </div>
                 </div>
 
-                {/* Standalone checkbox */}
                 <label className="flex items-start gap-3 cursor-pointer rounded-md border border-amber-200 bg-amber-50 px-4 py-3">
                   <input
                       type="checkbox"
@@ -838,7 +871,6 @@ export default function StockComplianceToolPage() {
                 </span>
                 </label>
 
-                {/* Parent group revenue */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Parent Group Total Revenue
@@ -865,7 +897,6 @@ export default function StockComplianceToolPage() {
                   </div>
                 </div>
 
-                {/* Live preview */}
                 {!isStandalone && restrictedRevenueInput && groupRevenueInput &&
                     parseFloat(restrictedRevenueInput) > 0 && parseFloat(groupRevenueInput) > 0 && (
                         <div className="rounded-md bg-gray-50 border border-gray-200 px-4 py-2 text-sm text-gray-600">
@@ -914,7 +945,7 @@ export default function StockComplianceToolPage() {
               </div>
             </StepCard>
 
-            {/* ── STEP 3 ─────────────────────────────────────────────── */}
+            {/* ── STEP 3 ───────────────────────────────────────────── */}
             <StepCard
                 number={3}
                 title="Sustainability Goals Check"
@@ -923,7 +954,7 @@ export default function StockComplianceToolPage() {
             >
               <div className="space-y-3">
                 <p className="text-sm text-gray-600">
-                  Based on your research, does this company’s core business actively contribute
+                  Based on your research, does this company's core business actively contribute
                   to any UN Sustainable Development Goals (SDGs)?
                 </p>
 
@@ -1005,7 +1036,7 @@ export default function StockComplianceToolPage() {
               </div>
             </StepCard>
 
-            {/* ── STEP 4 ─────────────────────────────────────────────── */}
+            {/* ── STEP 4 ───────────────────────────────────────────── */}
             <StepCard
                 number={4}
                 title="Monitoring Flags"
@@ -1040,6 +1071,26 @@ export default function StockComplianceToolPage() {
                     ✓ No – No Flags
                   </button>
                 </div>
+
+                {s4HasFlags === true && (
+                    <div className="space-y-2">
+                  <textarea
+                      rows={3}
+                      placeholder="Describe the concern flags, controversies, or red flags identified…"
+                      value={s4FlagDetails}
+                      onChange={(e) => setS4FlagDetails(e.target.value)}
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  />
+                      <input
+                          type="text"
+                          placeholder="Sources (e.g. news articles, regulatory filings, ESG reports)"
+                          value={s4FlagSources}
+                          onChange={(e) => setS4FlagSources(e.target.value)}
+                          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                      />
+                    </div>
+                )}
+
                 {(s4 === "pass" || s4 === "flag") && (
                     <div className={`rounded-md px-4 py-2 text-sm ${
                         s4 === "flag"
@@ -1054,7 +1105,7 @@ export default function StockComplianceToolPage() {
                     </div>
                 )}
                 <button
-                    onClick={() => { if (s4HasFlags !== null) handleStep4Submit(s4HasFlags) }}
+                    onClick={handleStep4Submit}
                     disabled={s4HasFlags === null}
                     className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
@@ -1063,105 +1114,174 @@ export default function StockComplianceToolPage() {
               </div>
             </StepCard>
 
-            {/* ── STEP 5 ─────────────────────────────────────────────── */}
+            {/* ── STEP 5 ───────────────────────────────────────────── */}
             <StepCard
                 number={5}
                 title="10% Exclusion Violation"
                 status={display5}
                 locked={!step5Unlocked}
             >
-              <p className="text-sm text-gray-600 mb-3">
-                Based on independent research, does this company&apos;s involvement in a restricted
-                activity exceed the 10% threshold when considering the full scope of operations
-                (not just reported segment revenue)?
-              </p>
+              <div className="space-y-4">
+                <p className="text-sm text-gray-600">
+                  Based on independent research, does this company&apos;s involvement in a restricted
+                  activity exceed the 10% threshold when considering the full scope of operations
+                  (not just reported segment revenue)? Enter the verified revenue figures below.
+                </p>
 
-              <div className="flex gap-3 mb-3">
-                <button
-                    onClick={() => setS5HasViolation(true)}
-                    className={`flex-1 rounded-md border px-4 py-2 text-sm font-medium transition-all ${
-                        s5HasViolation === true
-                            ? "border-red-400 bg-red-50 text-red-700"
-                            : "border-gray-300 text-gray-600 hover:bg-gray-50"
-                    }`}
-                >
-                  ✗ Yes – Violation Exists
-                </button>
-                <button
-                    onClick={() => setS5HasViolation(false)}
-                    className={`flex-1 rounded-md border px-4 py-2 text-sm font-medium transition-all ${
-                        s5HasViolation === false
-                            ? "border-green-500 bg-green-50 text-green-700"
-                            : "border-gray-300 text-gray-600 hover:bg-gray-50"
-                    }`}
-                >
-                  ✓ No – No Violation
-                </button>
-              </div>
-
-              {s5HasViolation === true && (
-                  <textarea
-                      rows={3}
-                      placeholder="Describe the violation and supporting evidence…"
-                      value={s5ViolationDetails}
-                      onChange={(e) => setS5ViolationDetails(e.target.value)}
-                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                  />
-              )}
-
-              <button
-                  onClick={handleStep5Submit}
-                  className="mt-3 w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
-              >
-                {s5 === "pass" || s5 === "fail" ? "Update" : "Confirm"}
-              </button>
-              {(s5 === "pass" || s5 === "fail") && (
-                  <div
-                      className={`mt-3 rounded-md px-4 py-2 text-sm ${
-                          step5?.exclusionViolation
-                              ? "bg-red-100 border border-red-200 text-red-800"
-                              : "bg-green-100 border border-green-200 text-green-800"
+                {/* Yes / No toggle */}
+                <div className="flex gap-3">
+                  <button
+                      onClick={() => setS5HasViolation(true)}
+                      className={`flex-1 rounded-md border px-4 py-2 text-sm font-medium transition-all ${
+                          s5HasViolation === true
+                              ? "border-red-400 bg-red-50 text-red-700"
+                              : "border-gray-300 text-gray-600 hover:bg-gray-50"
                       }`}
                   >
-                    {step5?.exclusionViolation
-                        ? "✗ Exclusion violation confirmed. Recommendation: DISINVEST."
-                        : "✓ No exclusion violation. Proceed to Step 6."}
-                  </div>
-              )}
-              {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+                    ✗ Yes – Potential Violation
+                  </button>
+                  <button
+                      onClick={() => setS5HasViolation(false)}
+                      className={`flex-1 rounded-md border px-4 py-2 text-sm font-medium transition-all ${
+                          s5HasViolation === false
+                              ? "border-green-500 bg-green-50 text-green-700"
+                              : "border-gray-300 text-gray-600 hover:bg-gray-50"
+                      }`}
+                  >
+                    ✓ No – No Violation
+                  </button>
+                </div>
+
+                {/* Revenue form – only shown when Yes is selected */}
+                {s5HasViolation === true && (
+                    <div className="space-y-4 rounded-md border border-red-100 bg-red-50 p-4">
+                      <p className="text-xs font-medium text-red-700">
+                        Enter the verified revenue figures to calculate the actual restricted activity percentage.
+                      </p>
+
+                      {/* Restricted segment revenue */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Restricted Segment Revenue
+                        </label>
+                        <p className="text-xs text-gray-500 mb-2">
+                          The revenue attributable to the restricted activity per your independent research.
+                        </p>
+                        <div className="flex gap-2">
+                          <span className="flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">$</span>
+                          <input
+                              type="number" min="0"
+                              placeholder="e.g. 5000000000"
+                              value={s5RestrictedRevenueInput}
+                              onChange={(e) => setS5RestrictedRevenueInput(e.target.value)}
+                              className="flex-1 rounded-r-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Standalone checkbox */}
+                      <label className="flex items-start gap-3 cursor-pointer rounded-md border border-amber-200 bg-amber-50 px-4 py-3">
+                        <input
+                            type="checkbox"
+                            checked={s5IsStandalone}
+                            onChange={(e) => {
+                              setS5IsStandalone(e.target.checked)
+                              if (e.target.checked) setS5GroupRevenueInput("")
+                            }}
+                            className="mt-0.5 h-4 w-4 accent-amber-600"
+                        />
+                        <span className="text-sm text-amber-800">
+                      <strong>This company has no parent group.</strong>
+                      <br />
+                      <span className="text-xs font-normal">
+                        Standalone entity – treated as 100% restricted revenue and will be flagged as a violation.
+                      </span>
+                    </span>
+                      </label>
+
+                      {/* Parent group revenue */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Parent Group Total Revenue
+                        </label>
+                        <p className="text-xs text-gray-500 mb-2">
+                          Total consolidated revenue of the parent group.
+                        </p>
+                        <div className="flex gap-2">
+                      <span className={`flex items-center rounded-l-md border border-r-0 px-3 text-sm transition-colors ${
+                          s5IsStandalone ? "border-gray-200 bg-gray-100 text-gray-400" : "border-gray-300 bg-gray-50 text-gray-500"
+                      }`}>$</span>
+                          <input
+                              type="number" min="0"
+                              placeholder={s5IsStandalone ? "N/A – standalone company" : "e.g. 50000000000"}
+                              value={s5IsStandalone ? "" : s5GroupRevenueInput}
+                              onChange={(e) => setS5GroupRevenueInput(e.target.value)}
+                              disabled={s5IsStandalone}
+                              className={`flex-1 rounded-r-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-colors ${
+                                  s5IsStandalone
+                                      ? "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
+                                      : "border-gray-300 bg-white text-gray-900"
+                              }`}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Live preview */}
+                      {s5LivePct !== null && (
+                          <div className="rounded-md bg-white border border-gray-200 px-4 py-2 text-sm text-gray-600">
+                            Estimated share:{" "}
+                            <strong className={s5LivePct >= 10 ? "text-red-600" : "text-green-700"}>
+                              {s5LivePct.toFixed(2)}%
+                            </strong>
+                            {" "}of group revenue
+                            {s5LivePct < 10 ? " – below 10% ✓" : " – exceeds 10% ✗"}
+                          </div>
+                      )}
+
+                      {/* Sources */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Sources</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. annual report URL, regulatory filing, analyst note"
+                            value={s5Sources}
+                            onChange={(e) => setS5Sources(e.target.value)}
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                      </div>
+                    </div>
+                )}
+
+                <button
+                    onClick={handleStep5Submit}
+                    className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+                >
+                  {s5 === "pass" || s5 === "fail" ? "Update" : "Confirm"}
+                </button>
+
+                {(s5 === "pass" || s5 === "fail") && (
+                    <div className={`rounded-md px-4 py-2 text-sm ${
+                        step5?.exclusionViolation
+                            ? "bg-red-100 border border-red-200 text-red-800"
+                            : "bg-green-100 border border-green-200 text-green-800"
+                    }`}>
+                      {step5?.exclusionViolation
+                          ? `✗ Exclusion violation confirmed (${step5.percentage.toFixed(2)}% ≥ 10%). Recommendation: DISINVEST.`
+                          : `✓ No exclusion violation (${step5?.percentage.toFixed(2)}% < 10%). Proceed to Step 6.`}
+                    </div>
+                )}
+
+                {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+              </div>
             </StepCard>
 
-            {/* ── STEP 6 ─────────────────────────────────────────────── */}
+            {/* ── STEP 6 ───────────────────────────────────────────── */}
             <StepCard
                 number={6}
                 title="Unethical Evidence – Substantiated?"
                 status={display6}
                 locked={!step6Unlocked}
             >
-              {/* AI Research Assistant */}
-              <div className="mb-4 rounded-md border border-indigo-200 bg-indigo-50 p-4">
-                <p className="text-sm font-medium text-indigo-800 mb-2">
-                  AI Research Assistant
-                </p>
-                <p className="text-xs text-indigo-600 mb-3">
-                  Generate a preliminary compliance research summary to inform your review.
-                  You remain responsible for verifying all information independently.
-                </p>
-                {!aiSummary ? (
-                    <button
-                        onClick={fetchAiSummary}
-                        disabled={aiLoading}
-                        className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50"
-                    >
-                      {aiLoading ? "Researching…" : "Generate Research Summary"}
-                    </button>
-                ) : (
-                    <div className="rounded-md bg-white border border-indigo-200 px-4 py-3 text-sm text-gray-700 whitespace-pre-line leading-relaxed">
-                      {aiSummary}
-                    </div>
-                )}
-              </div>
-
               <p className="text-sm text-gray-600 mb-3">
                 Based on your independent research, is there <strong>substantiated evidence</strong> (court
                 rulings, third-party audits, verified investigative journalism) of serious unethical behaviour?
@@ -1231,7 +1351,7 @@ export default function StockComplianceToolPage() {
               </button>
             </StepCard>
 
-            {/* ── STEP 7 ─────────────────────────────────────────────── */}
+            {/* ── STEP 7 ───────────────────────────────────────────── */}
             <StepCard
                 number={7}
                 title="Engage – Has It Been Corrected?"
@@ -1274,6 +1394,13 @@ export default function StockComplianceToolPage() {
                   onChange={(e) => setS7CorrectionDetails(e.target.value)}
                   className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
               />
+              <input
+                  type="text"
+                  placeholder="Sources (e.g. court settlement reference, audit report URL, press release)"
+                  value={s7Sources}
+                  onChange={(e) => setS7Sources(e.target.value)}
+                  className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              />
 
               {(s7 === "pass" || s7 === "fail") && (
                   <div className={`mt-3 rounded-md px-4 py-2 text-sm ${
@@ -1297,7 +1424,7 @@ export default function StockComplianceToolPage() {
               </button>
             </StepCard>
 
-            {/* ── COMPLIANCE REPORT ──────────────────────────────────── */}
+            {/* ── COMPLIANCE REPORT ─────────────────────────────────── */}
             {showReport && (
                 <div ref={reportRef} id="compliance-report" className="mt-10">
                   <div className="flex items-center justify-between mb-4 no-print">
@@ -1314,7 +1441,6 @@ export default function StockComplianceToolPage() {
                   </div>
 
                   <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-                    {/* Report header */}
                     <div className="border-b border-gray-100 pb-4 mb-4">
                       <div className="flex items-start justify-between">
                         <div>
@@ -1329,7 +1455,6 @@ export default function StockComplianceToolPage() {
                       </div>
                     </div>
 
-                    {/* Step summary table */}
                     <table className="w-full text-sm mb-4">
                       <thead>
                       <tr className="text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
@@ -1355,14 +1480,25 @@ export default function StockComplianceToolPage() {
 
                     <DecisionBanner decision={report.decision} />
 
-                    {/* Detailed notes */}
-                    {(step6?.unethicalEvidence || step5?.exclusionViolation) && (
+                    {(step4?.hasFlags || step6?.unethicalEvidence || step5?.exclusionViolation) && (
                         <div className="mt-4 rounded-md border border-gray-200 bg-gray-50 p-4 text-sm">
                           <p className="font-semibold text-gray-700 mb-2">Compliance Officer Notes</p>
+                          {step4?.hasFlags && step4.flagDetails && (
+                              <div className="mb-2">
+                                <p className="text-xs font-medium text-gray-500">Step 4 – Monitoring Flags</p>
+                                <p className="text-gray-700">{step4.flagDetails}</p>
+                                {step4.flagSources && (
+                                    <p className="text-xs text-gray-400 mt-0.5">Sources: {step4.flagSources}</p>
+                                )}
+                              </div>
+                          )}
                           {step5?.exclusionViolation && step5.violationDetails && (
                               <div className="mb-2">
                                 <p className="text-xs font-medium text-gray-500">Step 5 – Violation Details</p>
                                 <p className="text-gray-700">{step5.violationDetails}</p>
+                                {step5.sources && (
+                                    <p className="text-xs text-gray-400 mt-0.5">Sources: {step5.sources}</p>
+                                )}
                               </div>
                           )}
                           {step6?.unethicalEvidence && step6.evidenceDetails && (
@@ -1378,6 +1514,9 @@ export default function StockComplianceToolPage() {
                               <div>
                                 <p className="text-xs font-medium text-gray-500">Step 7 – Remediation</p>
                                 <p className="text-gray-700">{step7.correctionDetails}</p>
+                                {step7.sources && (
+                                    <p className="text-xs text-gray-400 mt-0.5">Sources: {step7.sources}</p>
+                                )}
                               </div>
                           )}
                         </div>
