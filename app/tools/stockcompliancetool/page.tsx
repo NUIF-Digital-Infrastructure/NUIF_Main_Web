@@ -7,8 +7,6 @@ import Footer from "@/components/footer"
 import ParallaxHero from "@/components/parallax-hero"
 import Background from "@/assets/background_6.jpg"
 
-const FMP_API_KEY = process.env.NEXT_PUBLIC_FMP_API_KEY
-
 // ─────────────────────────────────────────────
 // Constants
 // ─────────────────────────────────────────────
@@ -434,9 +432,7 @@ export default function StockComplianceToolPage() {
     setS7Sources("")
 
     try {
-      const profileRes = await fetch(
-          `https://financialmodelingprep.com/stable/profile?symbol=${trimmed}&apikey=${FMP_API_KEY}`
-      )
+        const profileRes = await fetch(`/api/fmp/profile?symbol=${encodeURIComponent(trimmed)}`)
       const profileData = await profileRes.json()
       if (!Array.isArray(profileData) || profileData.length === 0) {
         throw new Error(`No company found for ticker "${trimmed}".`)
