@@ -80,7 +80,7 @@ export default function HumanNetworkMaintainerPage() {
 
             <section className="mt-12 rounded-lg border border-gray-200 bg-gray-50 px-6 py-5">
               <h2 className="text-sm font-semibold uppercase tracking-widest text-gray-600">
-                Developed and maintained by for the Newcastle University Investment Fund:
+                Developed and maintained by and for the Newcastle University Investment Fund:
               </h2>
 
               <p className="mt-4 text-lg font-semibold text-gray-900">Developer(s)</p>

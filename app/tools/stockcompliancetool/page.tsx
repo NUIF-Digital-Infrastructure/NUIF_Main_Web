@@ -2,6 +2,10 @@
 
 import { useState, useRef } from "react"
 import Link from "next/link"
+import Navbar from "@/components/navbar"
+import Footer from "@/components/footer"
+import ParallaxHero from "@/components/parallax-hero"
+import Background from "@/assets/background_6.jpg"
 
 const FMP_API_KEY = process.env.NEXT_PUBLIC_FMP_API_KEY
 
@@ -697,7 +701,15 @@ export default function StockComplianceToolPage() {
           : null
 
   return (
-      <>
+      <main className="min-h-screen">
+        <Navbar />
+
+        <ParallaxHero
+          image={Background}
+          title="Stock Compliance Tool"
+          subtitle="Digital Infrastructure"
+        />
+
         <style>{`
         @media print {
           body * { visibility: hidden; }
@@ -707,24 +719,31 @@ export default function StockComplianceToolPage() {
         }
       `}</style>
 
-        <main className="bg-white py-16 print:py-4">
-          <div className="container mx-auto max-w-3xl px-6">
+        <section className="bg-white py-16 print:py-4 px-6">
+          <div className="container mx-auto max-w-3xl">
 
             {/* Header */}
             <div className="no-print">
               <Link
                   href="/tools"
-                  className="inline-flex items-center rounded-md border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-sm font-semibold text-indigo-600 hover:bg-indigo-100"
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-blue-900 transition hover:text-blue-700"
               >
                 ← Back to Tools
               </Link>
               <div className="mt-6">
-                <p className="text-sm font-semibold uppercase tracking-widest text-indigo-600">
-                  Digital Infrastructure
-                </p>
-                <h1 className="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
-                  Stock Compliance Tool
-                </h1>
+                <div className="flex gap-3 text-sm font-semibold text-blue-900">
+                  <Link href="/tools/stockcompliancetool/about" className="hover:text-blue-700 transition">
+                    About
+                  </Link>
+                  <span className="text-gray-300">|</span>
+                  <Link href="/tools/stockcompliancetool/privacy-policy" className="hover:text-blue-700 transition">
+                    Privacy Policy
+                  </Link>
+                  <span className="text-gray-300">|</span>
+                  <Link href="/tools/stockcompliancetool/terms-of-service" className="hover:text-blue-700 transition">
+                    Terms of Service
+                  </Link>
+                </div>
                 <p className="mt-2 text-gray-500 text-sm">
                   7-step compliance decision flow based on the UK NSI Act and SRI/ESG mandates.
                 </p>
@@ -1531,14 +1550,114 @@ export default function StockComplianceToolPage() {
                 </div>
             )}
 
-            {/* Footer */}
             <section className="mt-12 no-print rounded-lg border border-gray-200 bg-gray-50 px-6 py-5">
               <h2 className="text-sm font-semibold uppercase tracking-widest text-gray-600">
-                Developed for the Newcastle University Investment Fund
+                Developed and maintained by and for the Newcastle University Investment Fund:
               </h2>
+
+              <p className="mt-4 text-lg font-semibold text-gray-900">Developer(s)</p>
+              <ul className="mt-2 space-y-2 text-lg text-gray-900">
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/james-delin-89b737394/"
+                    className="text-blue-900 underline decoration-blue-200 underline-offset-4 transition hover:text-blue-700"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    James Delin
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/ryan-duong-97b960328/"
+                    className="text-blue-900 underline decoration-blue-200 underline-offset-4 transition hover:text-blue-700"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ryan Duong
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/sarahr15/"
+                    className="text-blue-900 underline decoration-blue-200 underline-offset-4 transition hover:text-blue-700"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Sarah Rafiepour
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/shalom-ademuwagun-a7318420a/"
+                    className="text-blue-900 underline decoration-blue-200 underline-offset-4 transition hover:text-blue-700"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Shalom Ademuwagun
+                  </a>
+                </li>
+              </ul>
+
+              <p className="mt-6 text-lg text-gray-900">
+                <span className="font-semibold">Publisher</span>
+              </p>
+              <p className="mt-2 text-lg text-gray-900">
+                <a
+                  href="https://www.linkedin.com/in/samraat-jain/"
+                  className="text-blue-900 underline decoration-blue-200 underline-offset-4 transition hover:text-blue-700"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Samraat Jain
+                </a>
+              </p>
+            </section>
+
+            <section className="mt-10 border-t border-gray-200 pt-5">
+              <div className="space-y-4 text-xs leading-relaxed text-gray-500">
+                <div>
+                  <h4 className="font-semibold text-gray-600">Tool Disclaimer</h4>
+                  <p>
+                    This interface and the "Stock Compliance Tool" is developed by the Digital Infrastructure team within
+                    the Newcastle University Investment Fund (NUIF) for sole educational and research purposes. NUIF is not
+                    authorized, supervised, or regulated by any financial authority (including the FCA) to provide
+                    financial services, algorithmic trading signals, or investment advisory. NUIF may hold positions in
+                    any security analyzed by this tool and may change those positions at any time without notice.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-gray-600">General Disclaimer &amp; Model Risk</h4>
+                  <p>
+                    The outputs generated by this tool do not constitute investment or financial advice. The "Stock Compliance
+                    Tool" applies a rules-based compliance workflow; it is not a real-time financial instrument and should not
+                    be used as the basis for any financial decision.
+                  </p>
+                  <p className="mt-2 italic">
+                    Users should conduct independent due diligence. NUIF and its members disclaim all liability for the
+                    accuracy of compliance outcomes or investment decisions derived from this tool. We accept no liability for
+                    any direct or consequential loss arising from the use of this tool. You are explicitly warned: relying
+                    on compliance logic built by untrained University students is unlikely to be a profitable investment
+                    strategy and carries significant risk.
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-gray-600">Technical &amp; Information Accuracy</h4>
+                  <p>
+                    Logic and parameters within this tool reflect the judgment of the authors at the time of development
+                    and are subject to change. Outputs are valid only at the point of generation and do not account for
+                    real-time market shifts or liquidity changes post-calculation. Hyperlinks provided in outputs are for
+                    verification only; NUIF does not endorse or approve the content of external websites.
+                  </p>
+                </div>
+              </div>
             </section>
           </div>
-        </main>
-      </>
+        </section>
+
+        <Footer />
+      </main>
   )
 }
