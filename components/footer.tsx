@@ -37,8 +37,10 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Newcastle University Investment Fund. All rights reserved.</p>
+        <div className="border-t border-gray-800 mt-8 pt-8 text-gray-400">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+            <p>&copy; {new Date().getFullYear()} Newcastle University Investment Fund. All rights reserved.</p>
+          </div>
         </div>
       </div>
     </footer>

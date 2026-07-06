@@ -7,6 +7,13 @@ export async function GET() {
   try {
     const presentationsDir = join(process.cwd(), 'public', 'presentations');
     const files = await readdir(presentationsDir);
+    const excludedPresentationFiles = new Set([
+      // Temporarily disable this report from loading on the website.
+      'NUIF_NUIF-Semester-One-Report-2025-26_29-01-2026.pdf'
+    ]);
+    const companyDisplayOverrides: Record<string, string> = {
+      'Team-Energy_Ørsted-A_S_15-03-2026': 'Ørsted A/S'
+    };
     const pad = (value: number) => value.toString().padStart(2, '0');
     const parseDatePart = (datePart: string) => {
       const [dayStr, monthStr, yearStr] = datePart.split('-');
@@ -33,6 +40,7 @@ export async function GET() {
     // Filter PDF files and extract information
     const presentations = files
       .filter(file => file.endsWith('.pdf'))
+      .filter(file => !excludedPresentationFiles.has(file))
       .map((file) => {
         // Extract team name and company from filename
         // Format: TeamName_CompanyName_DD-MM-YYYY.pdf
@@ -49,7 +57,8 @@ export async function GET() {
         // Get company name (everything between team and date)
         const company = parts.slice(1, -1).join(' ');
 
-        let title = company.replaceAll('-', ' ');
+        const companyDisplay = companyDisplayOverrides[withoutExt] ?? company.replaceAll('-', ' ');
+        let title = companyDisplay;
 
         if (withoutExt === 'NUIF_NUIF-Semester-One-Report-2025-26_29-01-2026') {
           title = 'NUIF Semester One Report 2025/26';
@@ -63,7 +72,7 @@ export async function GET() {
         return {
           id: withoutExt.toLowerCase().replace(/[^a-z0-9]/g, '-'),
           team: team.replaceAll('-', ' '),
-          company: company.replaceAll('-', ' '),
+          company: companyDisplay,
           title,
           subtitle: `Investment Analysis by ${team.replaceAll('-', ' ')}`,
           pdfPath: `/presentations/${file}`,

@@ -57,7 +57,7 @@ export const teamPageContent = {
     foundersTitle: "Founder profiles are being updated.",
     exHeadAnalystsTitle: "Ex-Head Analyst profiles are being updated.",
   },
-  alumniYear: "2025/26",
+  alumniYear: "2025",
   members: {
     leadership: [
       {
@@ -187,7 +187,7 @@ export const teamPageContent = {
       { name: "Max Flanagan", link: "https://www.linkedin.com/in/max-flanagan-085772376/" },
     ] as LinkedName[],
     digitalInfrastructure: [
-      { name: "Samraat Jain (NUIF Admin)", link: "https://www.linkedin.com/in/samraat-jain/" },
+      { name: "Samraat Jain (DI Admin)", link: "https://www.linkedin.com/in/samraat-jain/" },
       { name: "James Delin", link: "https://www.linkedin.com/in/james-delin-89b737394/" },
       { name: "Ryan Duong", link: "https://www.linkedin.com/in/ryan-duong-97b960328/" },
       { name: "Sarah Rafiepour", link: "https://www.linkedin.com/in/sarahr15/" },
