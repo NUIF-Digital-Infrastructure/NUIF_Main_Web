@@ -1,5 +1,22 @@
 import Background from "@/assets/background_1.jpg"
 
+// Import alumni logos
+import Algebris from "@/assets/alumni_destinations/algebris_investments.png"
+import AngloChinese from "@/assets/alumni_destinations/anglo_chinese_bank.jpg"
+import Barclays from "@/assets/alumni_destinations/Barclays.png"
+import BlackRock from "@/assets/alumni_destinations/blackrock.png"
+import BNY from "@/assets/alumni_destinations/BNY.jpg"
+import Cambridge from "@/assets/alumni_destinations/cambridge.png"
+import EDHEC from "@/assets/alumni_destinations/EDHEC.jpg"
+import FTIConsulting from "@/assets/alumni_destinations/FTI_Consulting.png"
+import LSE from "@/assets/alumni_destinations/LSE.jpg"
+import MorganStanley from "@/assets/alumni_destinations/morgan_stanley.png"
+import PWC from "@/assets/alumni_destinations/pwc.png"
+import Safra from "@/assets/alumni_destinations/safra_national_bank.png"
+import Santander from "@/assets/alumni_destinations/santander.png"
+import Venero from "@/assets/alumni_destinations/venero.png"
+
+
 export const homePageContent = {
     hero: {
         image: Background,
@@ -17,5 +34,25 @@ export const homePageContent = {
         learnMoreHref: "/about",
         meetTeamLabel: "Meet Our Team",
         meetTeamHref: "/our-team"
+    },
+    alumni: {
+        heading: "Alumni Destinations",
+        description: "Our alumni have gone on to secure roles at world-leading institutions and firms:",
+        logos: [
+            { name: "Algebris Investments", src: Algebris},
+            { name: "Anglo Chinese Bank", src: AngloChinese},
+            { name: "Barclays", src: Barclays},
+            { name: "BlackRock", src: BlackRock},
+            { name: "Bank of New York", src: BNY},
+            { name: "University of Cambridge", src: Cambridge},
+            { name: "EDHEC", src: EDHEC},
+            { name: "FTI Consulting", src: FTIConsulting},
+            { name: "LSE", src: LSE},
+            { name: "Morgan Stanley", src: MorganStanley},
+            { name: "PWC", src: PWC},
+            { name: "Safra National Bank", src: Safra},
+            { name: "Santander", src: Santander},
+            { name: "Venero Captial Advisors", src: Venero}
+        ]
     }
 }

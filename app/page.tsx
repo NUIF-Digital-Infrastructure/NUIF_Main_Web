@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import ParallaxHero from "@/components/parallax-hero"
 import Link from "next/link"
+import Image from "next/image"
 
 //import data
 import {homePageContent} from "@/data/home";
@@ -48,6 +49,31 @@ export default function Home() {
           </div>
         </div>
       </section> */}
+
+      <section className="py-20 px-6 bg-gray-50">
+        <div className="container mx-auto">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-8">{homePageContent.alumni.heading}</h2>
+            <p className="text-lg text-gray-700 mb-12">
+              {homePageContent.alumni.description}
+            </p>
+            
+            {/* Logo grid */}
+            <div className="flex flex-wrap items-center justify-center gap-8">
+              {homePageContent.alumni.logos.map((logo, index) => (
+                <div key={index} className="relative w-32 h-16">
+                  <Image
+                    src={logo.src}
+                    alt={logo.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </main>
