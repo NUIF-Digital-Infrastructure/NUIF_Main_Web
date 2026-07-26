@@ -17,11 +17,16 @@ import Santander from "@/assets/alumni_destinations/santander.png"
 import Venero from "@/assets/alumni_destinations/venero.png"
 
 
+import AneeshPhoto from "@/assets/people/AneeshAvari.jpg"
+import MaxPhoto from "@/assets/people/MaxGreyBackground.png"
+
 export const homePageContent = {
     hero: {
         image: Background,
         title: "Newcastle University Investment Fund",
-        subtitle: "Developing future finance professionals through hands-on investment experience"
+        subtitle: "Developing future finance professionals through hands-on investment experience",
+        applyLabel: "Apply Now",
+        applyHref: "/apply"
     },
     introduction: {
         heading: "Shaping Tomorrow's Financial Leaders",
@@ -35,6 +40,31 @@ export const homePageContent = {
         meetTeamLabel: "Meet Our Team",
         meetTeamHref: "/our-team"
     },
+    messages: [
+        {
+            heading: "A Message From Our Fund Manager",
+            body: "\"At NUIF, we focus on deep, independent research and sharing our thinking through writing. " +
+                "It's a chance to develop real analytical skills, test our ideas rigorously, and communicate them " +
+                "clearly. These are skills that go beyond any classroom.\"",
+            author: {
+                name: "Aneesh Avvari",
+                title: "Fund Manager, NUIF",
+                image: AneeshPhoto
+            }
+        },
+        {
+            heading: "A Message From Our Fund Manager",
+            body: "\"Thorough independent research underpins everything we do, with environmental, social " +
+                "and governance factors embedded in how we assess every market opportunity. This focus on rigorous " +
+                "analysis and sustainable, long-term value creation gives our members a genuine understanding of " +
+                "how investment decisions are made in practice.\"",
+            author: {
+                name: "Max Flanagan",
+                title: "Fund Manager, NUIF",
+                image: MaxPhoto
+            }
+        }
+    ],
     alumni: {
         heading: "Alumni Destinations",
         description: "Our alumni have gone on to secure roles at world-leading institutions and firms:",

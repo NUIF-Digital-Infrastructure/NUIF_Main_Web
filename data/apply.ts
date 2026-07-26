@@ -41,7 +41,7 @@ export const applyPageContent = {
       },
       studentId: "University ID Number *",
       academicYear: {
-        label: "What academic year will you be in for 2025/2026? *",
+        label: "What academic year will you be in for 2026/2027? *",
         placeholder: "Select your year",
         options: ["1st year", "2nd year", "3rd year", "4th year", "Masters", "PhD"],
       },
@@ -54,13 +54,11 @@ export const applyPageContent = {
       options: [
         "Head Analyst",
         "Analyst",
+        "Outreach Officer",
+        "Risk Analyst",
         "Compliance Officer",
-        "Risk Officer",
-        "Speaker Acquisition Officer",
-        "Digital Infrastructure Officer",
-        "Social Media Officer",
-      ],
-      reasonLabel: "Why do you want to be in this position? *",
+        "Digital Infrastructure Officer"
+      ]
     },
     sectors: {
       heading: "Sector Preferences",
@@ -71,21 +69,19 @@ export const applyPageContent = {
       selectedLabel: "Selected:",
       options: [
         "Energy",
-        "Materials",
         "Industrials",
-        "Utilities",
         "Healthcare",
-        "Consumer Discretionary",
-        "Communication Services",
-        "Information Technology",
-        "Real Estate",
-        "Consumer Staples",
+        "Renewables & Environmental",
+        "Emerging Markets",
         "Financials",
+        "Software & Cybersecurity",
+        "Semiconductors & Infrastructure",
+        "AI & Emerging Tech"
       ],
     },
     motivation: {
       heading: "Motivation",
-      label: "Why do you want to be a part of this fund and what could you contribute? *",
+      label: "Why do you want to be in this position and what could you contribute to NUIF? *",
     },
     upload: {
       heading: "CV Upload",

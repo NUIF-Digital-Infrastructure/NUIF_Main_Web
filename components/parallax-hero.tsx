@@ -7,9 +7,11 @@ interface ParallaxHeroProps {
   image: string | any
   title: string
   subtitle?: string
+  ctaLabel?: string
+  ctaHref?: string
 }
 
-export default function ParallaxHero({ image, title, subtitle }: ParallaxHeroProps) {
+export default function ParallaxHero({ image, title, subtitle, ctaLabel, ctaHref }: ParallaxHeroProps) {
   const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
@@ -73,7 +75,16 @@ export default function ParallaxHero({ image, title, subtitle }: ParallaxHeroPro
 
       <div className="relative h-full flex flex-col justify-center items-center text-white text-center px-4">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">{title}</h1>
-        {subtitle && <p className="text-xl md:text-2xl max-w-3xl">{subtitle}</p>}
+        {subtitle && <p className="text-xl md:text-2xl max-w-3xl mb-8">{subtitle}</p>}
+
+        {ctaLabel && ctaHref && (
+          <a
+            href={ctaHref}
+            className="bg-white text-black border border-white px-8 py-3 rounded-md transition-all text-lg font-medium"
+          >
+            {ctaLabel}
+          </a>
+        )}
         
         <button 
           onClick={scrollToContent}

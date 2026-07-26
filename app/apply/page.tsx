@@ -281,25 +281,6 @@ export default function Apply() {
                           })}
                         </div>
                       </div>
-
-                      <br />
-
-                      <div>
-                        <label htmlFor="positionReason" className="block mb-1 font-medium">
-                          {applyPageContent.form.position.reasonLabel}
-                        </label>
-                        <textarea
-                          id="positionReason"
-                          name="positionReason"
-                          rows={4}
-                          required
-                          onPaste={handlePaste}
-                          onCopy={handleCopy}
-                          onCut={handleCut}
-                          onContextMenu={handleContextMenu}
-                          className="w-full p-2 border border-gray-300 rounded"
-                        ></textarea>
-                      </div>
                     </div>
                   </div>
 
@@ -315,21 +296,30 @@ export default function Apply() {
                       </p>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {sectors.map(sector => (
-                          <div key={sector} className="flex items-center">
-                            <input
-                              type="checkbox"
-                              id={sector}
-                              checked={selectedSectors.includes(sector)}
-                              onChange={() => handleSectorChange(sector)}
-                              className="mr-2"
-                              disabled={!requiresSectorSelection && selectedPosition !== ""}
-                            />
-                            <label htmlFor={sector} className={!requiresSectorSelection && selectedPosition !== "" ? "text-gray-400" : ""}>
-                              {sector}
-                            </label>
-                          </div>
-                        ))}
+                        {sectors.map(sector => {
+                          const isSectorDisabled = 
+                            (!requiresSectorSelection && selectedPosition !== "") ||
+                            (selectedPosition === "Head Analyst" && (sector === "Healthcare" || sector === "AI & Emerging Tech"));
+
+                          return (
+                            <div key={sector} className="flex items-center">
+                              <input
+                                type="checkbox"
+                                id={sector}
+                                checked={selectedSectors.includes(sector)}
+                                onChange={() => handleSectorChange(sector)}
+                                className="mr-2"
+                                disabled={isSectorDisabled}
+                              />
+                              <label 
+                                htmlFor={sector} 
+                                className={isSectorDisabled ? "text-gray-400" : ""}
+                              >
+                                {sector}
+                              </label>
+                            </div>
+                          );
+                        })}
                       </div>
                       <p className="text-sm text-gray-500 mt-2">
                         {applyPageContent.form.sectors.selectedLabel} {selectedSectors.length}/3
