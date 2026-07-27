@@ -52,14 +52,6 @@ export default function Home() {
                     
                     <div className="flex flex-col md:flex-row md:items-stretch gap-12 md:gap-0">
                         <div className="flex-1 flex flex-col md:flex-row items-start gap-8 px-4 md:px-12 text-left">
-                            <div className="w-64 h-80 relative flex-shrink-0">
-                                <Image
-                                    src={homePageContent.messages[0].author.image}
-                                    alt={homePageContent.messages[0].author.name}
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
                             <div className="flex flex-col h-full justify-between">
                                 <blockquote className="text-lg md:text-xl font-medium text-gray-700 leading-relaxed mb-8 italic">
                                     {homePageContent.messages[0].body}
@@ -82,14 +74,6 @@ export default function Home() {
                         <hr className="md:hidden border-t border-gray-900 w-full" />
 
                         <div className="flex-1 flex flex-col md:flex-row items-start gap-8 px-4 md:px-12 text-left">
-                            <div className="w-64 h-80 relative flex-shrink-0">
-                                <Image
-                                    src={homePageContent.messages[1].author.image}
-                                    alt={homePageContent.messages[1].author.name}
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
                             <div className="flex flex-col h-full justify-between">
                                 <blockquote className="text-lg md:text-xl font-medium text-gray-700 leading-relaxed mb-8 italic">
                                     {homePageContent.messages[1].body}

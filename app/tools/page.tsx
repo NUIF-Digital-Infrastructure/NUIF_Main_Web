@@ -33,7 +33,7 @@ export default function ToolsPage() {
       <ParallaxHero
         image={Background}
         title="Digital Tools"
-        subtitle="Developed by the Digital Infrastructure team"
+        subtitle="Developed by the Digital Infrastructure Team"
       />
 
       <section className="py-20 px-6 bg-gray-100">

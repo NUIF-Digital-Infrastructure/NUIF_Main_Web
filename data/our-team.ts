@@ -92,7 +92,11 @@ export const teamPageContent = {
         link: "https://www.linkedin.com/in/george-chatterton-784257262",
         year: "2026",
         testimonial: {
-          quote: "NUIF let me lead a team researching and pitching investment ideas I was genuinely passionate about. As Head Analyst, the autonomy pushed me to master valuation and overcome challenges independently, while presenting sharpened my leadership skills. It proved far more practical than lecture-based learning, and directly shaped how I now approach company research and presentations in my M&A role.",
+          quote: "NUIF let me lead a team researching and pitching investment ideas I was genuinely passionate " +
+              "about. As Head Analyst, I was pushed by the autonomy to master valuation and overcome challenges " +
+              "independently, while presenting sharpened my leadership skills. It proved far more practical than " +
+              "lecture-based learning, and directly shaped how I now approach company research and presentations " +
+              "in my M&A role.",
           role: "Head Analyst (2025-2026)"
         }
       },

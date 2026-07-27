@@ -12,7 +12,7 @@ export const aboutPageContent = {
   about: {
     heading: "About Us",
     body:
-      "NUIF is a pioneering initiative within Newcastle University Business School, offering students with " +
+      "NUIF is a pioneering initiative within Newcastle University Business School, offering students  " +
         "hands-on experience in financial markets. Managed entirely by students, the fund focuses on equity " +
         "research, ethical investing, and long-term portfolio growth. Bridging theory and practice, NUIF prepares " +
         "students for careers in finance while elevating Newcastle University’s reputation among top " +
@@ -37,7 +37,7 @@ export const aboutPageContent = {
         image: SkillsDevelopment,
         description: "NUIF members build technical skills through structured training in financial modeling, " +
             "valuation, and industry analysis. This process covers the practical tools used in professional equity " +
-            "research, preparing members for careers in investment banking, asset management, and equity research",
+            "research, preparing members for careers in investment banking, asset management, and equity research.",
       },
       {
         title: "Equity Research",
@@ -64,7 +64,7 @@ export const aboutPageContent = {
       name: "Sam Bundy",
       role: "Head Analyst (2025-2026)",
       quote: "The investment fund gave me my first real-world exposure to the markets, understanding why share " +
-          "prices move and testing predictions built on fundamental analysis. It tied together everything I’d " +
+          "prices move and testing predictions built on fundamental analysis. It tied together everything I'd " +
           "studied across accounting, finance, and economics, and made the CFA a lot clearer. More than anything, " +
           "it gave me the confidence to go for equity analyst and asset management roles.",
       image: SamBundy,

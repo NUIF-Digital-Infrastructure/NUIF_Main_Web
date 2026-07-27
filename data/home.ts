@@ -15,6 +15,9 @@ import PWC from "@/assets/alumni_destinations/pwc.png"
 import Safra from "@/assets/alumni_destinations/safra_national_bank.png"
 import Santander from "@/assets/alumni_destinations/santander.png"
 import Venero from "@/assets/alumni_destinations/venero.png"
+import EY from "@/assets/alumni_destinations/EY.png"
+import GrantThornton from "@/assets/alumni_destinations/grant_thornton.png"
+import KPMG from "@/assets/alumni_destinations/kpmg.png"
 
 
 import AneeshPhoto from "@/assets/people/AneeshAvari.jpg"
@@ -30,7 +33,7 @@ export const homePageContent = {
     },
     introduction: {
         heading: "Shaping Tomorrow's Financial Leaders",
-        body: "The Newcastle University student-led Investment Fund (NUIF) created in 2025, provides students with " +
+        body: "The Newcastle University student-led Investment Fund (NUIF), created in 2025, provides students with " +
             "real-world experience in equity research and long-term investing. Our analysts develop valuable " +
             "skills that prepare them for competitive roles in the financial services industry."
     },
@@ -54,7 +57,7 @@ export const homePageContent = {
         },
         {
             heading: "A Message From Our Fund Manager",
-            body: "\"Thorough independent research underpins everything we do, with environmental, social " +
+            body: "\"Thorough, independent research underpins everything we do, with environmental, social " +
                 "and governance factors embedded in how we assess every market opportunity. This focus on rigorous " +
                 "analysis and sustainable, long-term value creation gives our members a genuine understanding of " +
                 "how investment decisions are made in practice.\"",
@@ -67,7 +70,7 @@ export const homePageContent = {
     ],
     alumni: {
         heading: "Alumni Destinations",
-        description: "Our alumni have gone on to secure roles at world-leading institutions and firms:",
+        description: "Our alumni have experience in roles at world-leading institutions and firms:",
         logos: [
             { name: "Algebris Investments", src: Algebris},
             { name: "Anglo Chinese Bank", src: AngloChinese},
@@ -82,7 +85,10 @@ export const homePageContent = {
             { name: "PWC", src: PWC},
             { name: "Safra National Bank", src: Safra},
             { name: "Santander", src: Santander},
-            { name: "Venero Captial Advisors", src: Venero}
+            { name: "Venero Captial Advisors", src: Venero},
+            { name: "EY", src: EY},
+            { name: "Grant Thornton", src: GrantThornton},
+            { name: "KPMG", src: KPMG}
         ]
     }
 }

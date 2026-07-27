@@ -12,8 +12,8 @@ export const applyPageContent = {
       "We're looking for passionate students who are interested in finance and investing to join our team. As a " +
       "member of NUIF, you'll gain hands-on experience in equity research, portfolio management, and financial " +
       "analysis.",
-      "Whether you're studying finance, economics, business or any other discipline, if you have a keen interest in " +
-      "financial markets and are committed to learning, we'd love to hear from you.",
+      "Whether you're studying finance, economics, business, or any other discipline, if you have a keen interest " +
+      "in financial markets and are committed to learning, we'd love to hear from you.",
     ],
   },
   success: {
