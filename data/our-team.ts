@@ -9,7 +9,7 @@ import DenizErkovanPhoto from "@/assets/people/DenizErkovan.jpg"
 import GeorgeChattertonPhoto from "@/assets/people/GeorgeChatterton.jpg"
 import PhilipAndreewitchPhoto from "@/assets/people/PhilipAndréewitch.jpg"
 import SamBundyPhoto from "@/assets/people/SamBundy.jpg"
-import MaxFlanaganPhoto from "@/assets/people/MaxFlanagan.jpg"
+import PlaceholderPhoto from "@/assets/people/Placeholder.jpg"
 
 type TeamMember = {
   id: string
@@ -17,6 +17,11 @@ type TeamMember = {
   title: string
   image: any
   link: string
+  year?: string
+  testimonial?: {
+    quote: string
+    role: string
+  }
 }
 
 type LinkedName = {
@@ -28,6 +33,7 @@ export const teamPageContent = {
   hero: {
     image: Background,
     title: "Our Team",
+    subtitle: "Our team brings together analysts from a wide range of nationalities and academic backgrounds."
   },
   nav: {
     heading: "Our Team",
@@ -37,7 +43,6 @@ export const teamPageContent = {
   },
   headings: {
     leadership: "Leadership",
-    executive: "Executive Committee",
     headAnalysts: "Head Analysts",
     current: "Current Members",
     analysts: "Analysts:",
@@ -50,92 +55,67 @@ export const teamPageContent = {
     exHeadAnalysts: "Ex-Head Analysts",
   },
   fallbacks: {
-    leadershipTitle: "Leadership profiles are being updated.",
-    leadershipBody: "Check back soon for more information about our team.",
-    headAnalystsTitle: "Head Analyst profiles are being updated.",
-    headAnalystsBody: "Check back soon for more information about our team.",
-    foundersTitle: "Founder profiles are being updated.",
-    exHeadAnalystsTitle: "Ex-Head Analyst profiles are being updated.",
+    leadership: "Coming Soon",
+    current: "Coming Soon",
+    foundersTitle: "Coming soon",
+    exHeadAnalystsTitle: "Coming soon",
   },
   alumniYear: "2025",
+  featuredAlumni: "George Chatterton",
   members: {
-    leadership: [
+    leadership: [] as TeamMember[],
+    headAnalysts: [] as TeamMember[],
+    alumniFounders: [
       {
-        id: "oscar-peters",
+        id: "oscar-peters-alumni",
         name: "Oscar Peters",
         title: "Founder & Fund Manager",
         image: OscarPetersPhoto,
         link: "https://www.linkedin.com/in/oscar-peters1/",
+        year: "2026",
       },
-      // {
-      //   id: "fernando-mendoza",
-      //   name: "Fernando Mendoza",
-      //   title: "Founder & Fund Manager",
-      //   image: FernandoMendozaPhoto,
-      //   link: "https://www.linkedin.com/in/fernando-e-mendoza-a83001200/",
-      // },
-    ] as TeamMember[],
-    headAnalysts: [
-      // {
-      //   id: "benjamin-moore",
-      //   name: "Benjamin Moore",
-      //   title: "Financials | Team Atlas",
-      //   image: BenjaminMoorePhoto,
-      //   link: "https://uk.linkedin.com/in/benjamin-moore-46215b263",
-      // },
-      // {
-      //   id: "alexander-telpov",
-      //   name: "Alexander Telpov",
-      //   title: "Financials | Team Mizar",
-      //   image: AlexanderTelpovPhoto,
-      //   link: "https://www.linkedin.com/in/a56109232",
-      // },
       {
-        id: "george-chatterton",
+        id: "fernando-mendoza-alumni",
+        name: "Fernando Mendoza",
+        title: "Founder & Fund Manager",
+        image: FernandoMendozaPhoto,
+        link: "https://www.linkedin.com/in/fernando-e-mendoza-a83001200/",
+        year: "2026",
+      },
+    ] as TeamMember[],
+    exHeadAnalysts: [
+      {
+        id: "george-chatterton-alumni",
         name: "George Chatterton",
         title: "Energy | Team Sirius",
         image: GeorgeChattertonPhoto,
         link: "https://www.linkedin.com/in/george-chatterton-784257262",
+        year: "2026",
+        testimonial: {
+          quote: "NUIF let me lead a team researching and pitching investment ideas I was genuinely passionate " +
+              "about. As Head Analyst, I was pushed by the autonomy to master valuation and overcome challenges " +
+              "independently, while presenting sharpened my leadership skills. It proved far more practical than " +
+              "lecture-based learning, and directly shaped how I now approach company research and presentations " +
+              "in my M&A role.",
+          role: "Head Analyst (2025-2026)"
+        }
       },
       {
-        id: "charles-crewe-read",
+        id: "charles-crewe-read-alumni",
         name: "Charles Crewe-Read",
         title: "Energy | Team Canopus",
         image: CharlesCreweReadPhoto,
         link: "https://www.linkedin.com/in/charles-crewe-read-0174552a1",
+        year: "2026",
       },
-      // {
-      //   id: "sam-bundy",
-      //   name: "Sam Bundy",
-      //   title: "Industrials | Team Rigel",
-      //   image: SamBundyPhoto,
-      //   link: "https://www.linkedin.com/in/samuel-bundy-023592292",
-      // },
       {
-        id: "deniz-erkovan",
+        id: "deniz-erkovan-alumni",
         name: "Deniz Erkovan",
         title: "Technology | Team Polaris",
         image: DenizErkovanPhoto,
         link: "https://www.linkedin.com/in/d-erk",
+        year: "2026",
       },
-      {
-        id: "max-flanagan",
-        name: "Max Flanagan",
-        title: " Technology | Team Bellatrix",
-        image: MaxFlanaganPhoto,
-        link: "https://www.linkedin.com/in/max-flanagan-085772376/",
-      },
-    ] as TeamMember[],
-    alumniFounders: [
-      {
-        id: "fernando-mendoza-alumni",
-        name: "Fernando Mendoza",
-        title: "FUND MANAGER",
-        image: FernandoMendozaPhoto,
-        link: "https://www.linkedin.com/in/fernando-e-mendoza-a83001200/",
-      },
-    ] as TeamMember[],
-    exHeadAnalysts: [
       {
         id: "benjamin-moore-alumni",
         name: "Benjamin Moore",
@@ -169,7 +149,13 @@ export const teamPageContent = {
       { name: "Adam Vigh-Vecsey", link: "https://www.linkedin.com/in/adam-vigh-vecsey-b6ab74295/" },
       { name: "Amaan Mughal", link: "https://www.linkedin.com/in/amaan-m-7289b831b/" },
       { name: "Amy Morrish", link: "https://www.linkedin.com/in/amy-morrish-8b7b60327/" },
-      { name: "Aneesh Avvari", link: "https://www.linkedin.com/in/aneesh-avvari-4aa5b0299/" },
+      {
+        id: "aneesh-avvari",
+        name: "Aneesh Avvari",
+        title: "Fund Manager",
+        image: PlaceholderPhoto,
+        link: "https://www.linkedin.com/in/aneesh-avvari-4aa5b0299/",
+      },
       { name: "Charlie Stevens", link: "https://www.linkedin.com/in/charlie-stevens-321712272/" },
       { name: "Elliot Monk", link: "https://www.linkedin.com/in/elliot-monk-25a159263/" },
       { name: "Emy Chen", link: "https://www.linkedin.com/in/emy-chen/" },
@@ -187,7 +173,6 @@ export const teamPageContent = {
       { name: "Max Flanagan", link: "https://www.linkedin.com/in/max-flanagan-085772376/" },
     ] as LinkedName[],
     digitalInfrastructure: [
-      { name: "Samraat Jain (DI Admin)", link: "https://www.linkedin.com/in/samraat-jain/" },
       { name: "James Delin", link: "https://www.linkedin.com/in/james-delin-89b737394/" },
       { name: "Ryan Duong", link: "https://www.linkedin.com/in/ryan-duong-97b960328/" },
       { name: "Sarah Rafiepour", link: "https://www.linkedin.com/in/sarahr15/" },

@@ -6,7 +6,7 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Newcastle University student-led Investment Fund (NUIF)",
+  title: "Newcastle University Investment Fund (NUIF)",
   description:
     "The Newcastle University student-led Investment Fund (NUIF) created in 2025, provides students with real-world experience in equity research and long-term investing. Our analysts develop valuable skills that prepare them for competitive roles in the financial services industry.",
   keywords: [

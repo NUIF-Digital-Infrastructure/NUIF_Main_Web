@@ -17,6 +17,7 @@ export default function Members() {
     headings,
     fallbacks,
     alumniYear,
+    featuredAlumni,
     members: {
       leadership,
       headAnalysts,
@@ -36,7 +37,8 @@ export default function Members() {
 
       <ParallaxHero 
         image={hero.image}
-        title={hero.title} 
+        title={hero.title}
+        subtitle={hero.subtitle}
       />
 
       <section className="py-20 px-6">
@@ -51,7 +53,7 @@ export default function Members() {
                   className={`block w-full text-left py-2 px-4 rounded-md transition-colors ${
                     activeSection === "leadership" 
                       ? "bg-gray-900 text-white" 
-                      : "text-gray-700 hover:bg-gray-100"
+                      : "text-gray-700 hover:bg-white"
                   }`}
                 >
                   {nav.leadership}
@@ -61,7 +63,7 @@ export default function Members() {
                   className={`block w-full text-left py-2 px-4 rounded-md transition-colors ${
                     activeSection === "current" 
                       ? "bg-gray-900 text-white" 
-                      : "text-gray-700 hover:bg-gray-100"
+                      : "text-gray-700 hover:bg-white"
                   }`}
                 >
                   {nav.current}
@@ -71,7 +73,7 @@ export default function Members() {
                   className={`block w-full text-left py-2 px-4 rounded-md transition-colors ${
                     activeSection === "alumni" 
                       ? "bg-gray-900 text-white" 
-                      : "text-gray-700 hover:bg-gray-100"
+                      : "text-gray-700 hover:bg-white"
                   }`}
                 >
                   {nav.alumni}
@@ -82,198 +84,64 @@ export default function Members() {
             {/* Main Content */}
             <div className="md:w-3/4">
               {activeSection === "leadership" && (
-                <>
-                  <h2 className="text-3xl md:text-4xl font-bold mb-12 pb-4 border-b">{headings.leadership}</h2>
-                  
-                  <h3 className="text-2xl font-bold mb-8">{headings.executive}</h3>
-                  
-                  {leadership.length > 0 ? (
-                    <>
-                      {/* Executive Committee grid (max 2 per row on md+) */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {leadership.map((member) => (
-                          <Link 
-                            href={member.link} 
-                            key={member.id}
-                            className="group block text-center"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <div className="mx-auto mb-4 relative w-48 h-48 overflow-hidden rounded-full grayscale hover:grayscale-0 transition-all duration-300">
-                              <Image
-                                src={member.image}
-                                alt={member.name}
-                                fill
-                                sizes="(max-width: 768px) 100vw, 33vw"
-                                style={{ objectFit: "cover" }}
-                                className="group-hover:scale-105 transition-transform duration-300"
-                              />
-                            </div>
-                            <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-1">
-                              {member.title}
-                            </h4>
-                            <h3 className="text-lg font-semibold text-blue-900">
-                              {member.name}
-                            </h3>
-                          </Link>
-                        ))}
-                      </div>
-                      
-
-                      {/* Head Analysts heading on its own line */}
-                      <h3 className="text-2xl font-bold mt-12 mb-8">{headings.headAnalysts}</h3>
-
-                      {/* Head Analysts grid (max 2 per row on md+) */}
-                      {headAnalysts.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          {headAnalysts.map((member) => (
-                            <Link
-                              href={member.link}
-                              key={member.id}
-                              className="group block text-center"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <div className="mx-auto mb-4 relative w-48 h-48 overflow-hidden rounded-full grayscale hover:grayscale-0 transition-all duration-300">
-                                <Image
-                                  src={member.image}
-                                  alt={member.name}
-                                  fill
-                                  sizes="(max-width: 768px) 100vw, 33vw"
-                                  style={{ objectFit: "cover" }}
-                                  className="group-hover:scale-105 transition-transform duration-300"
-                                />
-                              </div>
-                              <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-1">
-                                {member.title}
-                              </h4>
-                              <h3 className="text-lg font-semibold text-blue-900">
-                                {member.name}
-                              </h3>
-                            </Link>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="text-center py-12 bg-gray-50 rounded-lg">
-                          <p className="text-lg text-gray-500">{fallbacks.headAnalystsTitle}</p>
-                          <p className="text-gray-500">{fallbacks.headAnalystsBody}</p>
-                        </div>
-                      )}         
-                    </>
-                ) : (
-                    <div className="text-center py-12 bg-gray-50 rounded-lg">
-                      <p className="text-lg text-gray-500">{fallbacks.leadershipTitle}</p>
-                      <p className="text-gray-500">{fallbacks.leadershipBody}</p>
-                    </div>
-                  )}
-                </>
+                <div className="flex flex-col items-center justify-center min-h-[400px] text-center bg-white rounded-lg">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">{headings.leadership}</h2>
+                  <p className="text-xl text-gray-500 max-w-md">
+                    {fallbacks.leadership}
+                  </p>
+                </div>
               )}
 
               {activeSection === "current" && (
-                <>
-                  <h2 className="text-3xl md:text-4xl font-bold mb-12 pb-4 border-b">{headings.current}</h2>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    {/* Left column: Analysts */}
-                    <div>
-                      <h3 className="text-2xl font-bold mb-8">{headings.analysts}</h3>
-                      <ul className="space-y-2 ml-6">
-                        {analysts.map((analyst, index) => (
-                          <li key={index}>
-                            <Link 
-                              href={analyst.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-gray-700 hover:text-blue-900 hover:ml-2 transition-all duration-200 inline-block"
-                            >
-                              {analyst.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Right column: Officers */}
-                    <div className="space-y-8">
-                      <div>
-                        <h3 className="text-2xl font-bold mb-8">{headings.digitalInfrastructure}</h3>
-                        <ul className="space-y-2 ml-6">
-                          {digitalInfrastructure.map((officer, index) => (
-                            <li key={index}>
-                              <Link 
-                                href={officer.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-700 hover:text-blue-900 hover:ml-2 transition-all duration-200 inline-block"
-                              >
-                                {officer.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="text-2xl font-bold mb-8">{headings.riskOfficers}</h3>
-                        <ul className="space-y-2 ml-6">
-                          {riskOfficers.map((officer, index) => (
-                            <li key={index}>
-                              <Link 
-                                href={officer.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-700 hover:text-blue-900 hover:ml-2 transition-all duration-200 inline-block"
-                              >
-                                {officer.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="text-2xl font-bold mb-8">{headings.complianceOfficers}</h3>
-                        <ul className="space-y-2 ml-6">
-                          {complianceOfficers.map((officer, index) => (
-                            <li key={index}>
-                              <Link 
-                                href={officer.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-700 hover:text-blue-900 hover:ml-2 transition-all duration-200 inline-block"
-                              >
-                                {officer.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h3 className="text-2xl font-bold mb-8">{headings.welfareOfficers}</h3>
-                        <ul className="space-y-2 ml-6">
-                          {welfareOfficers.map((officer, index) => (
-                            <li key={index}>
-                              <Link 
-                                href={officer.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-700 hover:text-blue-900 hover:ml-2 transition-all duration-200 inline-block"
-                              >
-                                {officer.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </>
+                <div className="flex flex-col items-center justify-center min-h-[400px] text-center bg-white rounded-lg">
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">{headings.current}</h2>
+                  <p className="text-xl text-gray-500 max-w-md">
+                    {fallbacks.current}
+                  </p>
+                </div>
               )}
 
               {activeSection === "alumni" && (
                 <>
-                  <h2 className="text-3xl md:text-4xl font-bold mb-12 pb-4 border-b">{headings.alumni}</h2>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-12 pb-4">{headings.alumni}</h2>
+                  
+                  {/* Testimonial Section at the top of Alumni */}
+                  {exHeadAnalysts.find(m => m.name === featuredAlumni)?.testimonial && (
+                    <div className="mb-16 bg-white p-8 rounded-lg">
+                      {(() => {
+                        const chatterton = exHeadAnalysts.find(m => m.name === featuredAlumni)!;
+                        return (
+                          <div className="flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto">
+                            <div className="relative w-48 h-56 flex-shrink-0">
+                              <Image
+                                src={chatterton.image}
+                                alt={chatterton.name}
+                                fill
+                                className="object-cover rounded-md"
+                              />
+                            </div>
+                            <div className="flex flex-col justify-center">
+                              <blockquote className="text-gray-700 italic mb-6 text-lg leading-relaxed">
+                                "{chatterton.testimonial?.quote}"
+                              </blockquote>
+                              <div>
+                                <Link 
+                                  href="https://www.linkedin.com/in/george-chatterton-784257262" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer" 
+                                  className="font-bold text-gray-900 text-xl hover:underline"
+                                >
+                                  {chatterton.name}
+                                </Link>
+                                <p className="text-sm text-gray-500">{chatterton.testimonial?.role}</p>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  )}
+
                   <h3 className="text-2xl font-bold mb-8">{headings.founders}</h3>
                   {alumniFounders.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -292,7 +160,7 @@ export default function Members() {
                               fill
                               sizes="(max-width: 768px) 100vw, 33vw"
                               style={{ objectFit: "cover" }}
-                              className="group-hover:scale-105 transition-transform duration-300"
+                              className="transition-transform duration-300"
                             />
                           </div>
                           <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-1">
@@ -301,12 +169,12 @@ export default function Members() {
                           <h3 className="text-lg font-semibold text-blue-900">
                             {member.name}
                           </h3>
-                          <p className="text-sm text-gray-500 mt-1">{alumniYear}</p>
+                          <p className="text-sm text-gray-500 mt-1">{member.year || alumniYear}</p>
                         </Link>
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-12 bg-gray-50 rounded-lg">
+                    <div className="text-center py-12 bg-white rounded-lg">
                       <p className="text-lg text-gray-500">{fallbacks.foundersTitle}</p>
                     </div>
                   )}
@@ -329,7 +197,7 @@ export default function Members() {
                               fill
                               sizes="(max-width: 768px) 100vw, 33vw"
                               style={{ objectFit: "cover" }}
-                              className="group-hover:scale-105 transition-transform duration-300"
+                              className="transition-transform duration-300"
                             />
                           </div>
                           <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-1">
@@ -338,12 +206,12 @@ export default function Members() {
                           <h3 className="text-lg font-semibold text-blue-900">
                             {member.name}
                           </h3>
-                          <p className="text-sm text-gray-500 mt-1">{alumniYear}</p>
+                          <p className="text-sm text-gray-500 mt-1">{member.year || alumniYear}</p>
                         </Link>
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-12 bg-gray-50 rounded-lg">
+                    <div className="text-center py-12 bg-white rounded-lg">
                       <p className="text-lg text-gray-500">{fallbacks.exHeadAnalystsTitle}</p>
                     </div>
                   )}
