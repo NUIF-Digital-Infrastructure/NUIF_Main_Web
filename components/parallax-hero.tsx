@@ -13,14 +13,31 @@ interface ParallaxHeroProps {
 
 export default function ParallaxHero({ image, title, subtitle, ctaLabel, ctaHref }: ParallaxHeroProps) {
   const [scrollY, setScrollY] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    // Check if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+
+    let ticking = false
     const handleScroll = () => {
-      setScrollY(window.scrollY)
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY)
+          ticking = false
+        })
+        ticking = true
+      }
     }
 
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => {
+      window.removeEventListener("resize", checkMobile)
       window.removeEventListener("scroll", handleScroll)
     }
   }, [])
@@ -63,13 +80,20 @@ export default function ParallaxHero({ image, title, subtitle, ctaLabel, ctaHref
   return (
     <div className="relative h-screen overflow-hidden">
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 transition-transform duration-75 ease-out"
         style={{
-          backgroundImage: `url(${imageUrl})`,
-          transform: `translateY(${scrollY * 0.5}px)`,
-          // Removed the height adjustment that was scaling the image
+          transform: isMobile ? 'none' : `translate3d(0, ${scrollY * 0.5}px, 0)`,
+          willChange: isMobile ? 'auto' : 'transform',
         }}
       >
+        <Image
+          src={imageUrl}
+          alt={title}
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
 
