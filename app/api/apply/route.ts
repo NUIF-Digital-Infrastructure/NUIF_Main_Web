@@ -12,7 +12,6 @@ const ApplicationTemplate = ({
   studentId,
   academicYear,
   position,
-  positionReason,
   sectors,
   motivation,
   hasCV
@@ -22,7 +21,6 @@ const ApplicationTemplate = ({
   studentId: string;
   academicYear: string;
   position: string;
-  positionReason: string;
   sectors?: string[];
   motivation: string;
   hasCV: boolean;
@@ -32,7 +30,6 @@ const ApplicationTemplate = ({
   const safeStudentId = escapeHtml(studentId);
   const safeAcademicYear = escapeHtml(academicYear);
   const safePosition = escapeHtml(position);
-  const safePositionReason = escapeHtmlWithLineBreaks(positionReason);
   const safeMotivation = escapeHtmlWithLineBreaks(motivation);
   const safeSectors = sectors?.map((sector) => `<li>${escapeHtml(sector)}</li>`).join("") ?? "";
 
@@ -47,16 +44,12 @@ const ApplicationTemplate = ({
         <p><strong>Full Name:</strong> ${safeDisplayName}</p>
         <p><strong>University Email:</strong> ${safeEmail}</p>
         <p><strong>University ID:</strong> ${safeStudentId}</p>
-        <p><strong>Academic Year (2025/2026):</strong> ${safeAcademicYear}</p>
+        <p><strong>Academic Year (2026/2027):</strong> ${safeAcademicYear}</p>
       </div>
       
       <div style="background-color: #f5f5f5; border-radius: 5px; padding: 20px; margin-bottom: 20px;">
         <h2 style="color: #444; margin-top: 0;">Position Details</h2>
         <p><strong>Position Applied For:</strong> ${safePosition}</p>
-        <p><strong>Reason for Position:</strong></p>
-        <div style="background-color: white; padding: 10px; border-radius: 3px;">
-          ${safePositionReason}
-        </div>
         
         <p><strong>Preferred Sectors:</strong></p>
         ${sectors && sectors.length > 0 ? `
@@ -106,7 +99,6 @@ export async function POST(request: Request) {
     const studentId = formData.get("studentId") as string;
     const academicYear = formData.get("academicYear") as string;
     const position = formData.get("position") as string;
-    const positionReason = formData.get("positionReason") as string;
     const sectorsJson = formData.get("sectors") as string | null;
     let sectors: string[] = [];
 
@@ -147,7 +139,7 @@ export async function POST(request: Request) {
     
     // Validate required fields
     if (!fullName || !email || !studentId || !academicYear || !position || 
-        !positionReason || !motivation || !cv) {
+        !motivation || !cv) {
       return NextResponse.json(
         { error: "All fields are required" },
         { status: 400, headers: rateLimitHeaders }
@@ -187,7 +179,6 @@ export async function POST(request: Request) {
         studentId,
         academicYear,
         position,
-        positionReason,
         sectors,
         motivation,
         hasCV: true
@@ -198,11 +189,9 @@ export async function POST(request: Request) {
         `Full Name: ${safeFormattedName}`,
         `University Email: ${email}`,
         `University ID: ${studentId}`,
-        `Academic Year (2025/2026): ${academicYear}`,
+        `Academic Year (2026/2027): ${academicYear}`,
         "",
         `Position Applied For: ${position}`,
-        "Reason for Position:",
-        positionReason,
         "",
         `Preferred Sectors: ${sectors.length > 0 ? sectors.join(", ") : "None selected"}`,
         "",

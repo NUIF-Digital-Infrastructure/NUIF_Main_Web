@@ -57,7 +57,8 @@ export const applyPageContent = {
         "Outreach Officer",
         "Risk Analyst",
         "Compliance Officer",
-        "Digital Infrastructure Officer"
+        "Digital Infrastructure Officer",
+        "Welfare Officer"
       ]
     },
     sectors: {
