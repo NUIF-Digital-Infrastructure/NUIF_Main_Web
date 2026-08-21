@@ -19,8 +19,8 @@ export const applyPageContent = {
   success: {
     title: "Application Submitted!",
     body:
-      "Thank you very much for applying to the Newcastle University Student-Led Investment Fund. Our recruiters " +
-        "will review your application and reach out soon.",
+      "Thank you very much for applying to the Newcastle University Student-Led Investment Fund. A confirmation " +
+        "email has been sent to your university email address. Our recruiters will review your application and reach out soon.",
     countPrefix: "This is your",
     resetNote: "The form will reset automatically in a few seconds.",
   },

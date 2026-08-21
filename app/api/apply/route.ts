@@ -78,6 +78,30 @@ const ApplicationTemplate = ({
   `;
 };
 
+// Email template for applicant confirmation
+const ConfirmationTemplate = ({ 
+  fullName,
+  position
+}: { 
+  fullName: string;
+  position: string;
+}) => {
+  const safeFullName = escapeHtml(fullName);
+  const safePosition = escapeHtml(position);
+
+  return `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h1 style="color: #333;">NUIF Application Received</h1>
+      <p>Dear ${safeFullName},</p>
+      <p>Thank you for applying to the Newcastle University Investment Fund for the position of <strong>${safePosition}</strong>.</p>
+      <p>We have received your application and will review it shortly. You will be contacted via this email address regarding the next steps.</p>
+      <br/>
+      <p>Kind regards,</p>
+      <p><strong>NUIF Management Team</strong></p>
+    </div>
+  `;
+};
+
 export async function POST(request: Request) {
   try {
     const clientIp = getClientIp(request);
@@ -170,7 +194,7 @@ export async function POST(request: Request) {
     const fileBuffer = Buffer.from(fileArrayBuffer);
     
     const { data, error } = await resend.emails.send({
-      from: "NUIF Applications <onboarding@resend.dev>",
+      from: "NUIF Applications <applications@newcastleuniversityinvestmentfund.com>",
       to: ["newcastleinvestmentfund@gmail.com"],
       subject: `NUIF Application: ${safeFormattedName}`,
       html: ApplicationTemplate({
@@ -213,6 +237,23 @@ export async function POST(request: Request) {
     if (error) {
       console.error("Resend API error:", error);
       return NextResponse.json({ error: error.message }, { status: 500, headers: rateLimitHeaders });
+    }
+
+    // Send confirmation email to applicant
+    try {
+      await resend.emails.send({
+        from: "NUIF Applications <applications@newcastleuniversityinvestmentfund.com>",
+        to: [email],
+        subject: "NUIF Application Received",
+        html: ConfirmationTemplate({
+          fullName,
+          position
+        }),
+        text: `Dear ${fullName},\n\nThank you for applying to the Newcastle University Investment Fund for the position of ${position}.\n\nWe have received your application and will review it shortly. You will be contacted via this email address regarding the next steps.\n\nKind regards,\nNUIF Management Team`,
+      });
+    } catch (confirmError) {
+      // Log the error but don't fail the whole request as the primary email was sent
+      console.error("Confirmation email failed:", confirmError);
     }
 
     return NextResponse.json({ success: true, data }, { headers: rateLimitHeaders });
