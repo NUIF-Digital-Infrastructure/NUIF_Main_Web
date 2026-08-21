@@ -84,6 +84,9 @@ export default function Apply() {
       const data = await response.json()
 
       if (response.ok) {
+        // Capture the form reference immediately while 'e.currentTarget' is valid
+        const form = e.currentTarget;
+
         // Update and store application count in localStorage
         const newCount = applicationCount + 1
         setApplicationCount(newCount)
@@ -95,9 +98,10 @@ export default function Apply() {
           setSubmitted(false)
           setSelectedSectors([])
           setSelectedPosition("")
-          // Reset form inputs
-          const form = e.currentTarget as HTMLFormElement
-          form.reset()
+          // Reset form inputs using the captured reference
+          if (form) {
+            form.reset()
+          }
         }, 3000)
       } else {
         setError(data.error || applyPageContent.form.errors.submitGeneric)
