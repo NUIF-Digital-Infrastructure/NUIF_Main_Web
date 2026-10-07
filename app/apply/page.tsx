@@ -172,12 +172,17 @@ export default function Apply() {
               <SuccessContent />
             ) : (
               <div className="bg-white p-8 rounded-lg shadow-md">
+                <div className="mb-6 p-4 bg-red-50 border border-red-500 rounded text-red-800 text-center">
+                  <p className="font-bold">Applications close on 15th October</p>
+                  <p className="text-sm">Make sure you submit your application before the deadline.</p>
+                </div>
                 {/* Rest of your form as before */}
                 {error && (
                   <div className="mb-6 p-4 bg-red-100 border border-red-500 rounded text-red-700">
                     {error}
                   </div>
                 )}
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Personal Information */}
                   <div>
