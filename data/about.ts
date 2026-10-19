@@ -3,6 +3,9 @@ import EquityResearch from "@/assets/about/equity_research.jpeg"
 import PitchReview from "@/assets/about/pitch_review.jpeg"
 import SkillsDevelopment from "@/assets/about/skills_development.jpeg"
 import SamBundy from "@/assets/people/SamBundy.jpeg"
+import NCS from "@/assets/partners/ncs.png"
+import SCI from "@/assets/partners/sci.png"
+import WSO from "@/assets/partners/wso.png"
 
 export const aboutPageContent = {
   hero: {
@@ -58,6 +61,26 @@ export const aboutPageContent = {
   },
   impact: {
     heading: "Testimonials",
+  },
+  partnerships: {
+    heading: "Partnerships",
+    items: [
+      {
+        name: "Newcastle Consulting Society",
+        image: NCS,
+        link: "https://nusu.co.uk/societies/view/310",
+      },
+      {
+        name: "Student Capital Invitational",
+        image: SCI,
+        link: "https://studentcapitalinvitational.com/",
+      },
+      {
+        name: "Wall Street Oasis",
+        image: WSO,
+        link: "https://www.wallstreetoasis.com/",
+      },
+    ],
   },
   testimonials: [
     {
