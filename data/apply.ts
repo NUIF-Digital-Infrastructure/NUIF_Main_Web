@@ -6,6 +6,10 @@ export const applyPageContent = {
     image: Background,
     title: "Apply to Join NUIF",
   },
+  closedMessage: {
+    title: "Applications are now closed",
+    body: "Thank you for your interest in NUIF. We are no longer accepting new applications at this time.",
+  },
   introduction: {
     heading: "Join Our Team",
     paragraphs: [
