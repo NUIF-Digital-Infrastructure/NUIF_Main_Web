@@ -171,12 +171,12 @@ export default function Apply() {
             {submitted ? (
               <SuccessContent />
             ) : (
-              <div className="bg-white p-8 rounded-lg shadow-md">
+              <div className="bg-white p-8 rounded-lg">
                 <div className="mb-6 p-4 bg-red-50 border border-red-500 rounded text-red-800 text-center">
-                  <p className="font-bold">Applications close on 15th October</p>
-                  <p className="text-sm">Make sure you submit your application before the deadline.</p>
+                  <p className="font-bold">{applyPageContent.closedMessage.title}</p>
+                  <p className="text-sm">{applyPageContent.closedMessage.body}</p>
                 </div>
-                {/* Rest of your form as before */}
+                {/*
                 {error && (
                   <div className="mb-6 p-4 bg-red-100 border border-red-500 rounded text-red-700">
                     {error}
@@ -184,7 +184,6 @@ export default function Apply() {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Personal Information */}
                   <div>
                     <h3 className="text-xl font-bold mb-4">{applyPageContent.form.personal.heading}</h3>
                     <div className="space-y-4">
@@ -250,7 +249,6 @@ export default function Apply() {
 
                   <br />
 
-                  {/* Position Information */}
                   <div>
                     <h3 className="text-xl font-bold mb-4">{applyPageContent.form.position.heading}</h3>
                     <div className="space-y-4">
@@ -258,7 +256,7 @@ export default function Apply() {
                         <label className="block mb-1 font-medium">
                           {applyPageContent.form.position.label}
                           <span className="ml-1 text-sm font-normal text-gray-500">
-                            
+
                             <a
                               href={applyPageContent.form.position.linkHref}
                               target="_blank"
@@ -295,7 +293,6 @@ export default function Apply() {
 
                   <br />
 
-                  {/* Sector Preferences */}
                   {(selectedPosition === "" || requiresSectorSelection) && (
                     <div>
                       <h3 className="text-xl font-bold mb-4">{applyPageContent.form.sectors.heading}</h3>
@@ -306,7 +303,7 @@ export default function Apply() {
 
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                         {sectors.map(sector => {
-                          const isSectorDisabled = 
+                          const isSectorDisabled =
                             (!requiresSectorSelection && selectedPosition !== "") ||
                             (selectedPosition === "Head Analyst" && (sector === "Healthcare" || sector === "AI & Emerging Tech"));
 
@@ -320,8 +317,8 @@ export default function Apply() {
                                 className="mr-2"
                                 disabled={isSectorDisabled}
                               />
-                              <label 
-                                htmlFor={sector} 
+                              <label
+                                htmlFor={sector}
                                 className={isSectorDisabled ? "text-gray-400" : ""}
                               >
                                 {sector}
@@ -338,7 +335,6 @@ export default function Apply() {
 
                   {(selectedPosition === "" || requiresSectorSelection) && <br />}
 
-                  {/* Motivation */}
                   <div>
                     <h3 className="text-xl font-bold mb-4">{applyPageContent.form.motivation.heading}</h3>
                     <div>
@@ -361,7 +357,6 @@ export default function Apply() {
 
                   <br />
 
-                  {/* CV Upload */}
                   <div>
                     <h3 className="text-xl font-bold mb-4">{applyPageContent.form.upload.heading}</h3>
                     <div>
@@ -393,6 +388,7 @@ export default function Apply() {
                     {isSubmitting ? applyPageContent.form.submit.submitting : applyPageContent.form.submit.idle}
                   </button>
                 </form>
+                */}
               </div>
             )}
           </div>

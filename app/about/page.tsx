@@ -64,6 +64,39 @@ export default function About() {
             <hr className="max-w-xs mx-auto border-t border-gray-900" />
         </div>
 
+      <section className="py-48 px-6">
+        <div className="container mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">{aboutPageContent.partnerships.heading}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto justify-items-center">
+            {aboutPageContent.partnerships.items.map((partner, index) => (
+              <Link
+                key={index}
+                href={partner.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative group rounded-lg h-64 w-64 transition-transform duration-500 hover:scale-105"
+              >
+                <div className="relative h-full w-full overflow-hidden rounded-lg z-10 bg-gradient-to-b from-white from-50% to-transparent to-50%">
+                  <Image
+                    src={partner.image}
+                    alt={partner.name}
+                    fill
+                    className="object-contain p-4"
+                  />
+                </div>
+                <div className="absolute left-1/2 -translate-x-1/2 top-0 h-56 w-56 bg-black/70 text-white p-4 opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-32 z-[-1] rounded-b-[124px] flex items-center justify-center pt-20">
+                  <p className="text-center w-full text-sm font-semibold px-4">{partner.name}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+        <div className="container mx-auto">
+            <hr className="max-w-xs mx-auto border-t border-gray-900" />
+        </div>
+
       <section className="py-20 px-6">
         <div className="container mx-auto">
           <div className="max-w-6xl mx-auto text-center">
