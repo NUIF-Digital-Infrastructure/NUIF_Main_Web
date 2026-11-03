@@ -1,2 +1,4 @@
-onlyBuiltDependencies:
-  - canvas
+allowBuilds:
+  canvas: true
+  sharp: true
+  unrs-resolver: true
