@@ -24,5 +24,23 @@ export type PeriodResult = {
  * Maths lead: replace the body of this function.
  */
 export function simulate(startValue: number, periods: Period[]): PeriodResult[] {
-    throw new Error("simulate() is not implemented yet")
+    let nominal = startValue
+    let index = 1
+    let totalContributed = 0
+
+    const results: PeriodResult[] = [
+        { period: 0, nominal, real: nominal, totalContributed },
+    ]
+
+    periods.forEach((p, i) => {
+        nominal = nominal * (1 + p.returnRate)   // 1. apply the return
+        nominal = nominal + p.contribution       // 2. add the contribution (end of interval)
+        index = index * (1 + p.inflationRate)    // 3. update the inflation index
+        const real = nominal / index             // 4. real value
+        totalContributed += p.contribution
+
+        results.push({ period: i + 1, nominal, real, totalContributed })
+    })
+
+    return results
 }
