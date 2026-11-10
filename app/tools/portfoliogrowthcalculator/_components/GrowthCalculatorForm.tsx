@@ -39,7 +39,7 @@ export function GrowthCalculatorForm() {
               <SelectTrigger id="interval">
                 <SelectValue placeholder="Select interval" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className={"bg-white"}>
                 {intervals.map((int) => (
                   <SelectItem key={int.value} value={int.value}>
                     {int.label}
