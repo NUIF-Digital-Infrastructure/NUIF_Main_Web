@@ -21,6 +21,7 @@ export default function Members() {
     members: {
       leadership,
       headAnalysts,
+      headOfDigitalInfrastructure,
       alumniFounders,
       exHeadAnalysts,
       analysts,
@@ -84,21 +85,268 @@ export default function Members() {
             {/* Main Content */}
             <div className="md:w-3/4">
               {activeSection === "leadership" && (
-                <div className="flex flex-col items-center justify-center min-h-[400px] text-center bg-white rounded-lg">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">{headings.leadership}</h2>
-                  <p className="text-xl text-gray-500 max-w-md">
-                    {fallbacks.leadership}
-                  </p>
-                </div>
+                <>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-12 pb-4">{headings.leadership}</h2>
+                  
+                  {leadership.length > 0 ? (
+                    <>
+                      <h3 className="text-2xl font-bold mb-8">{headings.fundManagers}</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                        {leadership.map((member) => (
+                          <div key={member.id} className="text-center">
+                            <div className="mx-auto mb-4 relative w-48 h-48 overflow-hidden rounded-full">
+                              <Image
+                                src={member.image}
+                                alt={member.name}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 33vw"
+                                style={{ objectFit: "cover" }}
+                              />
+                            </div>
+                            <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-1">
+                              {member.title}
+                            </h4>
+                            {member.link ? (
+                              <Link 
+                                href={member.link} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-lg font-semibold text-blue-900 hover:text-blue-700 hover:underline transition-colors"
+                              >
+                                {member.name}
+                              </Link>
+                            ) : (
+                              <h3 className="text-lg font-semibold text-blue-900">
+                                {member.name}
+                              </h3>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center min-h-[200px] text-center bg-white rounded-lg mb-16">
+                      <p className="text-xl text-gray-500 max-w-md">
+                        {fallbacks.leadership}
+                      </p>
+                    </div>
+                  )}
+
+                  {headAnalysts.length > 0 && (
+                    <>
+                      <h3 className="text-2xl font-bold mb-8">{headings.headAnalystsSection}</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                        {headAnalysts.map((member) => (
+                          <div key={member.id} className="text-center">
+                            <div className="mx-auto mb-4 relative w-48 h-48 overflow-hidden rounded-full">
+                              <Image
+                                src={member.image}
+                                alt={member.name}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 33vw"
+                                style={{ objectFit: "cover" }}
+                              />
+                            </div>
+                            <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-1">
+                              {member.title}
+                            </h4>
+                            {member.link ? (
+                              <Link 
+                                href={member.link} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-lg font-semibold text-blue-900 hover:text-blue-700 hover:underline transition-colors"
+                              >
+                                {member.name}
+                              </Link>
+                            ) : (
+                              <h3 className="text-lg font-semibold text-blue-900">
+                                {member.name}
+                              </h3>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+
+                  {headOfDigitalInfrastructure && headOfDigitalInfrastructure.length > 0 && (
+                    <>
+                      <h3 className="text-2xl font-bold mb-8">{headings.headOfDigitalInfrastructure}</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {headOfDigitalInfrastructure.map((member) => (
+                          <div key={member.id} className="text-center">
+                            <div className="mx-auto mb-4 relative w-48 h-48 overflow-hidden rounded-full">
+                              <Image
+                                src={member.image}
+                                alt={member.name}
+                                fill
+                                sizes="(max-width: 768px) 100vw, 33vw"
+                                style={{ objectFit: "cover" }}
+                              />
+                            </div>
+                            <h4 className="text-sm uppercase tracking-wider text-gray-500 mb-1">
+                              {member.title}
+                            </h4>
+                            {member.link ? (
+                              <Link 
+                                href={member.link} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-lg font-semibold text-blue-900 hover:text-blue-700 hover:underline transition-colors"
+                              >
+                                {member.name}
+                              </Link>
+                            ) : (
+                              <h3 className="text-lg font-semibold text-blue-900">
+                                {member.name}
+                              </h3>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </>
               )}
 
               {activeSection === "current" && (
-                <div className="flex flex-col items-center justify-center min-h-[400px] text-center bg-white rounded-lg">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">{headings.current}</h2>
-                  <p className="text-xl text-gray-500 max-w-md">
-                    {fallbacks.current}
-                  </p>
-                </div>
+                <>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-12 pb-4">{headings.current}</h2>
+                  
+                  <div className="flex flex-col md:flex-row gap-x-12 gap-y-16 items-start">
+                    {/* Left Column: Analysts, Risk, Welfare */}
+                    <div className="flex-1 space-y-16 w-full">
+                      {analysts.length > 0 && (
+                        <div>
+                          <h3 className="text-2xl font-bold mb-6 text-gray-900">{headings.analysts}</h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
+                            {analysts.map((member, idx) => (
+                              member.link ? (
+                                <Link 
+                                  key={idx} 
+                                  href={member.link} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-blue-900 hover:text-blue-700 hover:underline transition-colors"
+                                >
+                                  {member.name}
+                                </Link>
+                              ) : (
+                                <span key={idx} className="text-gray-700">
+                                  {member.name}
+                                </span>
+                              )
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {riskOfficers.length > 0 && (
+                        <div>
+                          <h3 className="text-2xl font-bold mb-6 text-gray-900">{headings.riskOfficers}</h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
+                            {riskOfficers.map((member, idx) => (
+                              member.link ? (
+                                <Link 
+                                  key={idx} 
+                                  href={member.link} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-blue-900 hover:text-blue-700 hover:underline transition-colors"
+                                >
+                                  {member.name}
+                                </Link>
+                              ) : (
+                                <span key={idx} className="text-gray-700">
+                                  {member.name}
+                                </span>
+                              )
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {welfareOfficers.length > 0 && (
+                        <div>
+                          <h3 className="text-2xl font-bold mb-6 text-gray-900">{headings.welfareOfficers}</h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
+                            {welfareOfficers.map((member, idx) => (
+                              member.link ? (
+                                <Link 
+                                  key={idx} 
+                                  href={member.link} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-blue-900 hover:text-blue-700 hover:underline transition-colors"
+                                >
+                                  {member.name}
+                                </Link>
+                              ) : (
+                                <span key={idx} className="text-gray-700">
+                                  {member.name}
+                                </span>
+                              )
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Right Column: Digital Infrastructure, Compliance */}
+                    <div className="flex-1 space-y-16 w-full">
+                      {digitalInfrastructure.length > 0 && (
+                        <div>
+                          <h3 className="text-2xl font-bold mb-6 text-gray-900">{headings.digitalInfrastructure}</h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
+                            {digitalInfrastructure.map((member, idx) => (
+                              member.link ? (
+                                <Link 
+                                  key={idx} 
+                                  href={member.link} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-blue-900 hover:text-blue-700 hover:underline transition-colors"
+                                >
+                                  {member.name}
+                                </Link>
+                              ) : (
+                                <span key={idx} className="text-gray-700">
+                                  {member.name}
+                                </span>
+                              )
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {complianceOfficers.length > 0 && (
+                        <div>
+                          <h3 className="text-2xl font-bold mb-6 text-gray-900">{headings.complianceOfficers}</h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4">
+                            {complianceOfficers.map((member, idx) => (
+                              member.link ? (
+                                <Link 
+                                  key={idx} 
+                                  href={member.link} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-blue-900 hover:text-blue-700 hover:underline transition-colors"
+                                >
+                                  {member.name}
+                                </Link>
+                              ) : (
+                                <span key={idx} className="text-gray-700">
+                                  {member.name}
+                                </span>
+                              )
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
               )}
 
               {activeSection === "alumni" && (
