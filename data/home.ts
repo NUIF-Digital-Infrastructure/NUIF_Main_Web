@@ -25,8 +25,8 @@ export const homePageContent = {
         image: Background,
         title: "Newcastle University Investment Fund",
         subtitle: "Developing future finance professionals through hands-on investment experience",
-        applyLabel: "Apply Now",
-        applyHref: "/apply"
+        applyLabel: "Our Research",
+        applyHref: "/research"
     },
     introduction: {
         heading: "Shaping Tomorrow's Financial Leaders",
