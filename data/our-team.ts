@@ -11,6 +11,19 @@ import PhilipAndreewitchPhoto from "@/assets/people/PhilipAndréewitch.jpg"
 import SamBundyPhoto from "@/assets/people/SamBundy.jpg"
 import PlaceholderPhoto from "@/assets/people/Placeholder.jpg"
 
+import AneeshAvariPhoto from "@/assets/people/AneeshAvari.jpg"
+import MaxFlanaganPhoto from "@/assets/people/MaxFlanagan.jpg"
+import AmaanMughalPhoto from "@/assets/people/AmaanMughal.jpg"
+import AmyMorrishPhoto from "@/assets/people/AmyMorrish.jpg"
+import AndriiVorobiovPhoto from "@/assets/people/AndriiVorobiov.jpg"
+import AronSainiPhoto from "@/assets/people/AronSaini.jpg"
+import JackStevensPhoto from "@/assets/people/JackStevens.jpg"
+import JamesDelinPhoto from "@/assets/people/JamesDelin.jpg"
+import FinlayRitchiePhoto from "@/assets/people/FinlayRitchie.jpg"
+import HenriAllenPhoto from "@/assets/people/HenriAllen.jpg"
+import AdamVighVecseyPhoto from "@/assets/people/AdamVighVecsey.jpg"
+import HarrisonMinshallPhoto from "@/assets/people/HarrisonMinshall.jpg"
+
 type TeamMember = {
   id: string
   name: string
@@ -42,8 +55,10 @@ export const teamPageContent = {
     alumni: "ALUMNI",
   },
   headings: {
-    leadership: "Leadership",
-    headAnalysts: "Head Analysts",
+    leadership: "Leadership:",
+    fundManagers: "Fund Managers",
+    headAnalystsSection: "Head Analysts",
+    headOfDigitalInfrastructure: "Head of Digital Infrastructure",
     current: "Current Members",
     analysts: "Analysts:",
     digitalInfrastructure: "Digital Infrastructure:",
@@ -63,8 +78,103 @@ export const teamPageContent = {
   alumniYear: "2025",
   featuredAlumni: "George Chatterton",
   members: {
-    leadership: [] as TeamMember[],
-    headAnalysts: [] as TeamMember[],
+    leadership: [
+      {
+        id: "aneesh-avari",
+        name: "Aneesh Avari",
+        title: "Fund Manager",
+        image: AneeshAvariPhoto,
+        link: "https://www.linkedin.com/in/aneesh-avvari-4aa5b0299/"
+      },
+      {
+        id: "max-flanagan",
+        name: "Max Flanagan",
+        title: "Fund Manager",
+        image: MaxFlanaganPhoto,
+        link: "https://www.linkedin.com/in/max-flanagan-085772376/"
+      }
+    ] as TeamMember[],
+    headAnalysts: [
+      {
+        id: "amaan-mughal",
+        name: "Amaan Mughal",
+        title: "Head Analyst",
+        image: AmaanMughalPhoto,
+        link: "https://www.linkedin.com/in/amaan-mughal-7289b831b/"
+      },
+      {
+        id: "amy-morrish",
+        name: "Amy Morrish",
+        title: "Head Analyst",
+        image: AmyMorrishPhoto,
+        link: "https://www.linkedin.com/in/amy-morrish-8b7b60327/"
+      },
+      {
+        id: "andrii-vorobiov",
+        name: "Andrii Vorobiov",
+        title: "Head Analyst",
+        image: AndriiVorobiovPhoto,
+        link: "https://www.linkedin.com/in/andriivorobiov/"
+      },
+      {
+        id: "aron-saini",
+        name: "Aron Saini",
+        title: "Head Analyst",
+        image: AronSainiPhoto,
+        link: "https://www.linkedin.com/in/aronsaini/"
+      },
+      {
+        id: "jack-stevens",
+        name: "Jack Stevens",
+        title: "Head Analyst",
+        image: JackStevensPhoto,
+        link: "https://www.linkedin.com/in/jackantonystevens/"
+      },
+      {
+        id: "henri-allen",
+        name: "Henri Allen",
+        title: "Head Analyst",
+        image: HenriAllenPhoto,
+        link: ""
+      },
+      {
+        id: "finlay-ritchie",
+        name: "Finlay Ritchie",
+        title: "Head Analyst",
+        image: FinlayRitchiePhoto,
+        link: "https://www.linkedin.com/in/finlay-ritchie-178356235/"
+      },
+      {
+        id: "adam-vigh-vecsey",
+        name: "Adam Vigh-Vecsey",
+        title: "Head Analyst",
+        image: AdamVighVecseyPhoto,
+        link: "https://www.linkedin.com/in/adam-vigh-vecsey/"
+      },
+      {
+        id: "harrison-minshall",
+        name: "Harrison Minshall",
+        title: "Head Analyst",
+        image: HarrisonMinshallPhoto,
+        link: "https://www.linkedin.com/in/harrisonminshall/"
+      },
+      {
+        id: "elliot-monk",
+        name: "Elliot Monk",
+        title: "Head Analyst",
+        image: PlaceholderPhoto,
+        link: "https://www.linkedin.com/in/elliot-monk/"
+      }
+    ] as TeamMember[],
+    headOfDigitalInfrastructure: [
+      {
+        id: "james-delin",
+        name: "James Delin",
+        title: "Head of Digital Infrastructure",
+        image: JamesDelinPhoto,
+        link: "https://www.linkedin.com/in/james-delin-89b737394/"
+      }
+    ] as TeamMember[],
     alumniFounders: [
       {
         id: "oscar-peters-alumni",
@@ -146,55 +256,57 @@ export const teamPageContent = {
       },
     ] as TeamMember[],
     analysts: [
-      { name: "Adam Vigh-Vecsey", link: "https://www.linkedin.com/in/adam-vigh-vecsey-b6ab74295/" },
-      { name: "Amaan Mughal", link: "https://www.linkedin.com/in/amaan-m-7289b831b/" },
-      { name: "Amy Morrish", link: "https://www.linkedin.com/in/amy-morrish-8b7b60327/" },
-      {
-        id: "aneesh-avvari",
-        name: "Aneesh Avvari",
-        title: "Fund Manager",
-        image: PlaceholderPhoto,
-        link: "https://www.linkedin.com/in/aneesh-avvari-4aa5b0299/",
-      },
-      { name: "Charlie Stevens", link: "https://www.linkedin.com/in/charlie-stevens-321712272/" },
-      { name: "Elliot Monk", link: "https://www.linkedin.com/in/elliot-monk-25a159263/" },
-      { name: "Emy Chen", link: "https://www.linkedin.com/in/emy-chen/" },
-      { name: "Ethan Wood", link: "https://www.linkedin.com/in/ethan-wood-370b63360/" },
-      { name: "Finlay Ritchie", link: "https://www.linkedin.com/in/finlay-ritchie-178356235/" },
-      { name: "Henri Allen", link: "https://www.linkedin.com/in/henri-allen-773a652b1/" },
-      { name: "Isaac Rodrigues", link: "https://www.linkedin.com/in/isaac-rodrigues-733604245/" },
-      { name: "Jack Stevens", link: "https://www.linkedin.com/in/jackantonystevens/" },
-      { name: "Jaime Allen", link: "https://www.linkedin.com/in/jaime-allen-056782339/" },
-      { name: "Jamie Setch", link: "https://www.linkedin.com/in/jamie-setch/" },
-      { name: "Josh Schofield", link: "https://www.linkedin.com/in/joshschofieldbaf/" },
-      { name: "Louis Hart", link: "https://www.linkedin.com/in/louis-hart-6b1714311/" },
-      { name: "Mannik Bhambhu", link: "https://www.linkedin.com/in/mannik-bhambhu/" },
-      { name: "Marcus Tsang", link: "https://www.linkedin.com/in/medic001/" },
-      { name: "Max Flanagan", link: "https://www.linkedin.com/in/max-flanagan-085772376/" },
+      { name: "Jack Kennerdell", link: "https://www.linkedin.com/in/jack-kennerdell-388590364/" },
+      { name: "Ollie Paler", link: "https://www.linkedin.com/in/ollie-paler-5660903b7/" },
+      { name: "Will Burrows", link: "https://www.linkedin.com/in/william-burrows-087707224/" },
+      { name: "Seb Wainwright", link: "https://www.linkedin.com/in/seb-wainwright-708106331" },
+      { name: "Alex Pattullo", link: "https://www.linkedin.com/in/alexpattullo/" },
+      { name: "Guy Salisbury", link: "https://www.linkedin.com/in/guy-salisbury-0496962b9?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Lola Sultanova", link: "https://www.linkedin.com/in/lola-sultanova-91606b309/" },
+      { name: "Freddie Whyle", link: "https://www.linkedin.com/in/freddie-whyle-01998b2b7" },
+      { name: "Jack Dinning", link: "https://www.linkedin.com/in/jack-dinning-099971440" },
+      { name: "James Hannigan", link: "https://www.linkedin.com/in/james-hannigan-13ba77394?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Jem Wilson", link: "https://www.linkedin.com/in/jem-wilson-900444266" },
+      { name: "Matthew Slim", link: "https://www.linkedin.com/in/matthew-slim-b8b486304" },
+      { name: "Ben King", link: "https://www.linkedin.com/in/ben-king-856b11444?trk=contact-info" },
+      { name: "Abdulrahman Adetunbi", link: "https://www.linkedin.com/in/abdulrahmanadetunbi/" },
+      { name: "Samaira Rahman", link: "https://www.linkedin.com/in/samaira-rahman-5a5a73269/" },
+      { name: "Jack Steadman", link: "https://www.linkedin.com/in/jack-steadman8/" },
+      { name: "Charlie Hudson", link: "https://www.linkedin.com/in/charleshudson1?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Nadim Ouddane", link: "https://www.linkedin.com/in/nadimouddane/" },
+      { name: "Sam Scarborough", link: "https://www.linkedin.com/in/sam-scarborough-875aab315?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Samuel Symes", link: "https://www.linkedin.com/in/samuel-r-symes?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Will Wiseman", link: "https://www.linkedin.com/in/will-wiseman-0977b2358?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Finn Hall", link: "https://www.linkedin.com/in/finn-hall-7138952b8?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Joshua Brahoua", link: "https://www.linkedin.com/in/jdbrahoua" },
+      { name: "Mackenzie Deer", link: "https://www.linkedin.com/in/mackenziedeer?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Alexandros Petropoulos", link: "https://www.linkedin.com/in/alexandros-petropoulos-116358433/" },
+      { name: "Alex Hamilton", link: "https://www.linkedin.com/in/alex-hamilton-8a9976311?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Joel-Perren-Pote", link: "https://www.linkedin.com/in/joel-perren-pote-09187a326?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Lewis Stevenson", link: "https://www.linkedin.com/in/lewis-stevenson-bbab5926b?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Max Young", link: "" },
+      { name: "JP Dunphy", link: "https://www.linkedin.com/in/jamespatrickdunphy/?lipi=urn%3Ali%3Apage%3Ap_mwlite_feed%3BDwYQOrK4R96XslSUcyNseQ%3D%3D" },
+      { name: "Pericles Pierides", link: "" },
+      { name: "Thomas Whelman", link: "https://www.linkedin.com/in/thomas-wellham-867a65324" },
+      { name: "Alexander Chauhan", link: "https://www.linkedin.com/in/alexander-chauhan?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
     ] as LinkedName[],
     digitalInfrastructure: [
-      { name: "James Delin", link: "https://www.linkedin.com/in/james-delin-89b737394/" },
-      { name: "Ryan Duong", link: "https://www.linkedin.com/in/ryan-duong-97b960328/" },
-      { name: "Sarah Rafiepour", link: "https://www.linkedin.com/in/sarahr15/" },
       { name: "Shalom Ademuwagun", link: "https://www.linkedin.com/in/shalom-ademuwagun-a7318420a/" },
+      { name: "Sarah Rafiepour", link: "https://www.linkedin.com/in/sarahr15/" },
+      { name: "Myat Noe Angel", link: "https://www.linkedin.com/in/myatnoeangel/" },
+      { name: "Cristiano Saldanha", link: "https://www.linkedin.com/in/cristiano-saldanha-b9757a261/" },
     ] as LinkedName[],
     riskOfficers: [
-      { name: "Amir Tsoy", link: "https://www.linkedin.com/in/wiryhook/" },
-      { name: "Andrii Vorobiov", link: "https://www.linkedin.com/in/andrii-vorobiov-b3820b19a/" },
-      { name: "Callum McGrath", link: "https://www.linkedin.com/in/callum-mcgrath-b62839316/" },
-      { name: "Hrik Datta", link: "https://www.linkedin.com/in/hrik-datta/" },
-      { name: "J.P. Dunphy", link: "https://www.linkedin.com/in/james-patrick-dunphy-b86246326/" },
-      { name: "Marcus Tejero Mehmi", link: "https://www.linkedin.com/in/marcus-tm-466398304/" },
-      { name: "Rhys Jones", link: "https://www.linkedin.com/in/rhys-jones-0400aa235/" },
-      { name: "Theodore Kolawole", link: "https://www.linkedin.com/in/theodore-k-416036235/" },
-      { name: "Abdulrahman Adetunbi", link: "https://www.linkedin.com/in/abdulrahman-adetunbi-05728827b/" },
+      { name: "Jack Kirkham", link: "https://www.linkedin.com/in/jack-kirkham-165388322/" },
+      { name: "Olatomiwa Oladipupo", link: "https://www.linkedin.com/in/olatomiwa-oladipupo-6426b5335?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Dimas Sediyatomo", link: "https://www.linkedin.com/in/dimas-adytia-pramanajati-sediyatmono-ab9a38349/" },
+      { name: "Ella Noble", link: "https://www.linkedin.com/in/ella-noble-070200448?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
+      { name: "Oskaras Valiauga", link: "https://www.linkedin.com/in/oskaras-martynas-valiauga-049299449" },
+      { name: "Louis Martin", link: "https://www.linkedin.com/in/louisjhmartin?utm_source=share_via&utm_content=profile&utm_medium=member_ios" },
     ] as LinkedName[],
     complianceOfficers: [
       { name: "Aishath Janna Jameel", link: "https://www.linkedin.com/in/aishath-janna-jameel/" },
-      { name: "Ben Hobbs", link: "https://www.linkedin.com/in/ben-hobbs-024858203/" },
     ] as LinkedName[],
-    welfareOfficers: [
-      { name: "Audrey Mumtaz Aqila Fuad", link: "https://www.linkedin.com/in/audrey-mumtaz-aqila-fuad-6b0453215/" },
-    ] as LinkedName[],
+    welfareOfficers: [] as LinkedName[],
   },
 }

@@ -20,9 +20,6 @@ import GrantThornton from "@/assets/alumni_destinations/grant_thornton.png"
 import KPMG from "@/assets/alumni_destinations/kpmg.png"
 
 
-import AneeshPhoto from "@/assets/people/AneeshAvari.jpg"
-import MaxPhoto from "@/assets/people/MaxGreyBackground.png"
-
 export const homePageContent = {
     hero: {
         image: Background,
@@ -51,8 +48,7 @@ export const homePageContent = {
                 "clearly. These are skills that go beyond any classroom.\"",
             author: {
                 name: "Aneesh Avvari",
-                title: "Fund Manager, NUIF",
-                image: AneeshPhoto
+                title: "Fund Manager, NUIF"
             }
         },
         {
@@ -63,8 +59,7 @@ export const homePageContent = {
                 "how investment decisions are made in practice.\"",
             author: {
                 name: "Max Flanagan",
-                title: "Fund Manager, NUIF",
-                image: MaxPhoto
+                title: "Fund Manager, NUIF"
             }
         }
     ],
