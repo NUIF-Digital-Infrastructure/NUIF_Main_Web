@@ -80,8 +80,8 @@ export const teamPageContent = {
   members: {
     leadership: [
       {
-        id: "aneesh-avari",
-        name: "Aneesh Avari",
+        id: "aneesh-avvari",
+        name: "Aneesh Avvari",
         title: "Fund Manager",
         image: AneeshAvariPhoto,
         link: "https://www.linkedin.com/in/aneesh-avvari-4aa5b0299/"
