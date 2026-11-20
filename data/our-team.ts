@@ -23,6 +23,7 @@ import FinlayRitchiePhoto from "@/assets/people/FinlayRitchie.jpg"
 import HenriAllenPhoto from "@/assets/people/HenriAllen.jpg"
 import AdamVighVecseyPhoto from "@/assets/people/AdamVighVecsey.jpg"
 import HarrisonMinshallPhoto from "@/assets/people/HarrisonMinshall.jpg"
+import ElliotMonkPhoto from "@/assets/people/ElliotMonk.png"
 
 type TeamMember = {
   id: string
@@ -162,7 +163,7 @@ export const teamPageContent = {
         id: "elliot-monk",
         name: "Elliot Monk",
         title: "Head Analyst",
-        image: PlaceholderPhoto,
+        image: ElliotMonkPhoto,
         link: "https://www.linkedin.com/in/elliot-monk/"
       }
     ] as TeamMember[],
