@@ -1,12 +1,30 @@
 "use client"
 
+import * as React from "react"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import ParallaxHero from "@/components/parallax-hero"
 import Background from "@/assets/background_6.jpg"
-import { GrowthCalculatorForm } from "./_components/GrowthCalculatorForm"
+import { GrowthCalculatorForm, type CalculatorInputs } from "./_components/GrowthCalculatorForm"
+import { ResultsSummary } from "./_components/ResultsSummary"
+import { simulate, type PeriodResult } from "./calculator"
 
 export default function PortfolioGrowthCalculatorPage() {
+  const [results, setResults] = React.useState<PeriodResult[]>([])
+  const [startValue, setStartValue] = React.useState(0)
+
+  const handleCalculate = React.useCallback((inputs: CalculatorInputs) => {
+    const periods = Array.from({ length: inputs.duration }, () => ({
+      returnRate: inputs.returnRate,
+      inflationRate: inputs.inflationRate,
+      contribution: inputs.contribution,
+    }))
+
+    const simulationResults = simulate(inputs.startingValue, periods)
+    setResults(simulationResults)
+    setStartValue(inputs.startingValue)
+  }, [])
+
   return (
     <main className="min-h-screen">
       <Navbar />
@@ -27,7 +45,9 @@ export default function PortfolioGrowthCalculatorPage() {
               </p>
             </header>
 
-            <GrowthCalculatorForm />
+            <GrowthCalculatorForm onCalculate={handleCalculate} />
+            
+            <ResultsSummary results={results} startValue={startValue} />
           </div>
         </div>
       </section>
