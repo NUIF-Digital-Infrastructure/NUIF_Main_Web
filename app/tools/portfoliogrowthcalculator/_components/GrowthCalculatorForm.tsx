@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
+import { validateInputs } from "../validation"
 
 export type CalculatorInputs = {
   startingValue: number
@@ -31,46 +32,19 @@ export function GrowthCalculatorForm({ onCalculate }: GrowthCalculatorFormProps)
   const [errors, setErrors] = React.useState<{ [key: string]: string }>({})
 
   React.useEffect(() => {
-    const newErrors: { [key: string]: string } = {}
+    const result = validateInputs(
+      startingValue,
+      returnRate,
+      inflationRate,
+      contribution,
+      duration,
+      isFixedDuration
+    )
 
-    const sVal = startingValue === "" ? 0 : parseFloat(startingValue)
-    const rRate = (returnRate === "" || returnRate === "-") ? 0 : parseFloat(returnRate)
-    const iRate = (inflationRate === "" || inflationRate === "-") ? 0 : parseFloat(inflationRate)
-    const cont = contribution === "" ? 0 : parseFloat(contribution)
-    const dur = duration === "" ? 12 : parseInt(duration)
+    setErrors(result.errors)
 
-    if (startingValue !== "" && isNaN(parseFloat(startingValue))) newErrors.startingValue = "Please enter a starting value"
-    if (returnRate !== "" && returnRate !== "-" && isNaN(parseFloat(returnRate))) newErrors.returnRate = "Please enter a return rate"
-    if (inflationRate !== "" && inflationRate !== "-" && isNaN(parseFloat(inflationRate))) newErrors.inflationRate = "Please enter an inflation rate"
-    if (contribution !== "" && isNaN(parseFloat(contribution))) newErrors.contribution = "Please enter a contribution"
-    if (isFixedDuration && duration !== "" && isNaN(parseInt(duration))) newErrors.duration = "Please enter a duration"
-
-    // Range checks
-    if (!newErrors.startingValue && startingValue !== "" && sVal < 0) newErrors.startingValue = "Starting value must be £0 or more"
-    if (!newErrors.contribution && contribution !== "" && cont < 0) newErrors.contribution = "Contribution must be £0 or more"
-    
-    if (!newErrors.returnRate && returnRate !== "" && returnRate !== "-") {
-      if (rRate <= -100) newErrors.returnRate = "Return must be above -100%"
-    }
-    
-    if (!newErrors.inflationRate && inflationRate !== "" && inflationRate !== "-") {
-      if (iRate <= -100) newErrors.inflationRate = "Inflation must be above -100%"
-    }
-
-    if (isFixedDuration && !newErrors.duration && duration !== "") {
-      if (dur <= 0) newErrors.duration = "Duration must be at least 1"
-    }
-
-    setErrors(newErrors)
-
-    if (Object.keys(newErrors).length === 0) {
-      onCalculate({
-        startingValue: sVal,
-        returnRate: rRate / 100,
-        inflationRate: iRate / 100,
-        contribution: cont,
-        duration: isFixedDuration ? dur : 0
-      })
+    if (result.isValid) {
+      onCalculate(result.parsedValues)
     }
   }, [startingValue, returnRate, inflationRate, contribution, duration, isFixedDuration, onCalculate])
 
